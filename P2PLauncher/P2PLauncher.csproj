@@ -57,7 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Exceptions\EnvironmentErrorException.cs" />
     <Compile Include="Models\NetworkAdapter.cs" />
+    <Compile Include="Utils\EnvironmentUtils.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -74,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Models\WindowsService.cs" />
     <Compile Include="Modules\AdapterModule.cs" />
+    <Compile Include="Modules\WebRequestModule.cs" />
     <Compile Include="Modules\WinServicesModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -100,8 +103,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utils\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
