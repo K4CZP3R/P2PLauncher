@@ -9,12 +9,12 @@ namespace P2PLauncher.Model
 {
     public enum FreeLanInstallationStatus
     {
+        [Description("Status is unknown.")]
+        UNK,
         [Description("FreeLan path is unknown.")]
         CONFIG_NOT_SET,
         [Description("Current FreeLan path is invalid.")]
         INVALID_PATH,
-        [Description("Current FreeLan executable is invalid.")]
-        INVALID_EXECUTABLE,
         [Description("FreeLan is located and valid!")]
         OK
     }

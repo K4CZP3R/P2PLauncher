@@ -4,6 +4,7 @@ using P2PLauncher.Services.Commands;
 using P2PLauncher.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
@@ -17,58 +18,120 @@ namespace P2PLauncher.ViewModel
 {
     public class FreeLanDetectionViewModel : INotifyPropertyChanged
     {
-        private FreeLanDetection freeLanDetection;
-        private string selectedPath;
+        public string SelectedPath { get; set; } = "Select path...";
+
+
         private readonly IDialogService _dialogService;
         private readonly IFileService _fileService;
+        private readonly FreeLanDetection freeLanDetection;
 
-        public string InstallationStatus { get; set; }
 
-        public Visibility TabVisibility { get; set; } = Visibility.Hidden;
-        public string SelectedPath
+        private string installationInfo;
+        public string InstallationInfo
         {
-            get { return selectedPath; }
+            get { return installationInfo; }
             set
             {
-                selectedPath = value;
-                OnPropertyChanged("SelectedPath");
+                installationInfo = value;
+                OnPropertyChanged(EnvHelper.GetMemberName(() => InstallationInfo));
             }
         }
 
-
-        public FreeLanDetection FreeLanDetection
+        private FreeLanInstallationStatus installationStatus;
+        public FreeLanInstallationStatus InstallationStatus
         {
-            get { return freeLanDetection; }
+            get { return installationStatus; }
             set
             {
-                freeLanDetection = value;
-                OnPropertyChanged("FreeLanDetection");
+                installationStatus = value;
+                InstallationStatusStr = EnumHelper.GetDescription(value);
+                OnPropertyChanged(EnvHelper.GetMemberName(() => InstallationStatus));
+                OnPropertyChanged(EnvHelper.GetMemberName(() => InstallationStatusStr));
+
             }
         }
+
+        public string InstallationStatusStr { get; set; }
+
+        private Visibility tabVisibility = Visibility.Hidden;
+        public Visibility TabVisibility
+        {
+            get
+            {
+                return tabVisibility;
+            }
+            set
+            {
+                tabVisibility = value;
+                OnPropertyChanged(EnvHelper.GetMemberName(() => TabVisibility));
+            }
+        }
+
+        private Visibility autoSearchVisibility = Visibility.Hidden;
+        public Visibility AutoSearchVisibility
+        {
+            get { return autoSearchVisibility; }
+            set
+            {
+                autoSearchVisibility = value;
+                OnPropertyChanged(EnvHelper.GetMemberName(() => AutoSearchVisibility));
+            }
+        }
+
+        private string downloadHelp;
+        public string DownloadHelp
+        {
+            get { return downloadHelp; }
+            set
+            {
+                downloadHelp = value;
+                OnPropertyChanged(EnvHelper.GetMemberName(() => DownloadHelp));
+            }
+        }
+
 
         public FreeLanDetectionViewModel(IDialogService dialogService, IFileService fileService)
         {
             this._dialogService = dialogService;
             this._fileService = fileService;
+            this.freeLanDetection = new FreeLanDetection(_fileService);
 
+            QueryInstallationStatus();
+            QueryUpdateHelp();
 
-            FreeLanDetection = new FreeLanDetection(_fileService);
-
-            FreeLanDetection.GetInstallationStatus();
 
 
         }
 
-        // Command to find freelan manually
-        private RelayCommand _selectFreeLanCommand;
-        public RelayCommand SelectFreeLanCommand
+
+        private RelayCommand _showDownloadSectionCommand;
+        public RelayCommand ShowDownloadSectionCommand
         {
             get
             {
-                return _selectFreeLanCommand ??
-                  (_selectFreeLanCommand = new RelayCommand(obj =>
+                return _showDownloadSectionCommand ??
+                    (_showDownloadSectionCommand = new RelayCommand(obj =>
+                    {
+                        System.Diagnostics.Process.Start(freeLanDetection.GetDownloadUrl());
+
+                    }));
+            }
+        }
+
+        private RelayCommand _findFreeLanCommand;
+        public RelayCommand FindFreeLanCommand
+        {
+            get
+            {
+                return _findFreeLanCommand ??
+                  (_findFreeLanCommand = new RelayCommand(obj =>
                   {
-                      this._dialogService.ShowMessage("Select freelan command!", "Relay!");
+                      if (!freeLanDetection.FindFreeLan())
+                      {
+                          _dialogService.ShowMessage("Could not locate FreeLan, select it manually.", "FreeLan not found");
+                      }
+                      QueryInstallationStatus();
+
                   }));
             }
         }
@@ -83,8 +146,10 @@ namespace P2PLauncher.ViewModel
                     {
                         if (_dialogService.OpenFileDialog())
                         {
-                            SelectedPath = _dialogService.FilePath;
+                            freeLanDetection.SetFreelanPath(_dialogService.FilePath);
                         }
+                        QueryInstallationStatus();
+
                     }));
             }
         }
@@ -92,44 +157,56 @@ namespace P2PLauncher.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == "FreeLanDetection")
-                UpdateUI();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            AdjustUserInterface(propertyName);
         }
 
-
-        public void UpdateUI()
+        private void QueryInstallationStatus()
         {
+            InstallationStatus = freeLanDetection.GetInstallationStatus();
+        }
+        private void QueryUpdateHelp()
+        {
+            string bitValue = EnvHelper.Is64Bit() ? "x64-bit" : "x86-bit";
+            DownloadHelp = $"You need to download {bitValue} version of FreeLan.";
+        }
 
-            if (EnumHelper.GetDescription(freeLanDetection.InstallationStatus).Equals(InstallationStatus))
-                return;
+        public void AdjustUserInterface(string propertyName = null)
+        {
+            if (propertyName == null) return;
 
-            switch (freeLanDetection.InstallationStatus)
+            switch (propertyName)
             {
-                case FreeLanInstallationStatus.INVALID_EXECUTABLE:
-                    _dialogService.ShowMessage("Selected FreeLan executable seems to be invalid, select a valid one.", "Installation status");
-                    TabVisibility = Visibility.Visible;
-                    break;
-                case FreeLanInstallationStatus.INVALID_PATH:
-                    _dialogService.ShowMessage("Selected FreeLan path is not valid, select a valid one.", "Installation status");
-                    TabVisibility = Visibility.Visible;
-                    break;
-                case FreeLanInstallationStatus.CONFIG_NOT_SET:
-                    _dialogService.ShowMessage("FreeLan path is not selected (yet). We will try to search for it.", "Installation status");
-                    TabVisibility = Visibility.Visible;
-                    break;
-                case FreeLanInstallationStatus.OK:
-                    TabVisibility = Visibility.Hidden;
+                case "InstallationStatus":
+                    AdjustInstallationStatus();
                     break;
             }
 
-            InstallationStatus = EnumHelper.GetDescription(freeLanDetection.InstallationStatus);
-
-
         }
 
+        public void AdjustInstallationStatus()
+        {
+            switch (InstallationStatus)
+            {
+                case FreeLanInstallationStatus.CONFIG_NOT_SET:
+                    TabVisibility = Visibility.Visible;
+                    AutoSearchVisibility = Visibility.Visible;
+                    InstallationInfo = "You can use automatic detection or locate it manually / download it";
+                    _dialogService.ShowMessage("FreeLan path is unknown, please define it.", "Installation status");
+                    break;
+                case FreeLanInstallationStatus.INVALID_PATH:
+                    AutoSearchVisibility = Visibility.Visible;
+                    TabVisibility = Visibility.Visible;
+                    InstallationInfo = "You can use automatic detection or locate it manually / download it";
+                    _dialogService.ShowMessage("Current FreeLan path is invalid, please redefine it.", "Installation status");
+                    break;
+                case FreeLanInstallationStatus.OK:
+                    TabVisibility = Visibility.Hidden;
+                    AutoSearchVisibility = Visibility.Hidden;
+                    InstallationInfo = "You are done here! You can close this window now.";
+                    break;
+            }
 
-
-
+        }
     }
 }

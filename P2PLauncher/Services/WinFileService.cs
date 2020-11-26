@@ -13,22 +13,5 @@ namespace P2PLauncher.Services
         {
             return endsWithFile == true ? File.Exists(path) : Directory.Exists(path);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="value"></param>
-        /// <exception cref="FileNotFoundException">File does not exist.</exception>
-        /// <returns></returns>
-        public bool FileContainsValue(string path, string value)
-        {
-
-            if (!CheckPath(path, true))
-            {
-                throw new FileNotFoundException();
-            }
-            return File.ReadAllText(path).Contains(value);
-        }
     }
 }

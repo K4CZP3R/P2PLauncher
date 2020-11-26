@@ -70,6 +70,7 @@
     <Compile Include="Services\WinDialogService.cs" />
     <Compile Include="Services\WinFileService.cs" />
     <Compile Include="Utils\EnumHelper.cs" />
+    <Compile Include="Utils\EnvHelper.cs" />
     <Compile Include="ViewModel\FreeLanDetectionViewModel.cs" />
     <Compile Include="View\FreeLanDetectionWindow.xaml.cs">
       <DependentUpon>FreeLanDetectionWindow.xaml</DependentUpon>

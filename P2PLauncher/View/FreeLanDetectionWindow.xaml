@@ -9,20 +9,21 @@
         >
     <Grid>
         <Label Content="Status:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
-        <Label Content="{Binding InstallationStatus}" HorizontalAlignment="Left" Margin="55,10,0,0" VerticalAlignment="Top"/>
-        <Label Content="{Binding FreeLanDetection.InstallationInfo}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding InstallationStatusStr}"  HorizontalAlignment="Left" Margin="55,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding InstallationInfo}"  HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
 
-        <Button Command="{Binding SelectFreeLanCommand}" Content="Button" HorizontalAlignment="Left" Margin="108,275,0,0" VerticalAlignment="Top" Width="75"/>
-        <TabControl x:Name="tabControl" Visibility="{Binding TabVisibility}" HorizontalAlignment="Left" Height="100" Margin="36,116,0,0" VerticalAlignment="Top" Width="361">
+        <Button x:Name="btnAutoSearch" Command="{Binding FindFreeLanCommand}" Visibility="{Binding AutoSearchVisibility}" Content="Find FreeLan" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="75"/>
+        <TabControl x:Name="tabControl" Visibility="{Binding TabVisibility}" HorizontalAlignment="Left" Height="100" Margin="10,119,0,0" VerticalAlignment="Top" Width="361">
             <TabItem Header="Locate it">
                 <Grid Background="#FFE5E5E5">
-                    <Label Content="{Binding SelectedPath}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Button Command="{Binding SelectFreeLanPath}" Content="Button" HorizontalAlignment="Left" Margin="280,3,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Label Content="{Binding SelectedPath}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0"/>
+                    <Button Command="{Binding SelectFreeLanPath}" Content="Select..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Download">
                 <Grid Background="#FFE5E5E5">
-                    <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label Content="{Binding DownloadHelp}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0"/>
+                    <Button Content="Download" Command="{Binding ShowDownloadSectionCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
             </TabItem>
         </TabControl>
