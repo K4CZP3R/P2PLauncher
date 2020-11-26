@@ -1,0 +1,32 @@
+﻿<Window x:Class="P2PLauncher.View.FreeLanDetectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2PLauncher.View"
+        mc:Ignorable="d"
+        Title="FreeLanDetectionWindow" Height="450" Width="800"
+        >
+    <Grid>
+        <Label Content="Status:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
+        <Label Content="{Binding InstallationStatus}" HorizontalAlignment="Left" Margin="55,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding FreeLanDetection.InstallationInfo}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+
+        <Button Command="{Binding SelectFreeLanCommand}" Content="Button" HorizontalAlignment="Left" Margin="108,275,0,0" VerticalAlignment="Top" Width="75"/>
+        <TabControl x:Name="tabControl" Visibility="{Binding TabVisibility}" HorizontalAlignment="Left" Height="100" Margin="36,116,0,0" VerticalAlignment="Top" Width="361">
+            <TabItem Header="Locate it">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="{Binding SelectedPath}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Button Command="{Binding SelectFreeLanPath}" Content="Button" HorizontalAlignment="Left" Margin="280,3,0,0" VerticalAlignment="Top" Width="75"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Download">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+
+    </Grid>
+</Window>

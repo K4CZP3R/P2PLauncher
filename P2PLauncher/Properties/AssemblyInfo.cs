@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("P2PLauncher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("K4CZP3R")]
 [assembly: AssemblyProduct("P2PLauncher")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
