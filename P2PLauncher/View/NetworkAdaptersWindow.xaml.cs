@@ -16,16 +16,15 @@ using System.Windows.Shapes;
 namespace P2PLauncher.View
 {
     /// <summary>
-    /// Interaction logic for WindowsServicesWindow.xaml
+    /// Interaction logic for NetworkAdaptersWindow.xaml
     /// </summary>
-    public partial class WindowsServicesWindow : Window
+    public partial class NetworkAdaptersWindow : Window
     {
-        public WindowsServicesWindow()
+        public NetworkAdaptersWindow()
         {
             InitializeComponent();
 
-            DataContext = new WindowsServicesViewModel();
+            DataContext = new NetworkServicesViewModel();
         }
-
     }
 }
