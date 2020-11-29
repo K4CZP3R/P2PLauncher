@@ -39,6 +39,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
@@ -61,21 +62,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
-    <Compile Include="Exceptions\EnvironmentErrorException.cs" />
-    <Compile Include="Exceptions\FreeLanInstallationNotFoundException.cs" />
-    <Compile Include="FreeLanSelectionScreen.xaml.cs">
-      <DependentUpon>FreeLanSelectionScreen.xaml</DependentUpon>
+    <Compile Include="Model\FreeLanInstallationStatus.cs" />
+    <Compile Include="Model\FreeLanDetection.cs" />
+    <Compile Include="Services\Commands\RelayCommand.cs" />
+    <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Services\WinDialogService.cs" />
+    <Compile Include="Services\WinFileService.cs" />
+    <Compile Include="Utils\EnumHelper.cs" />
+    <Compile Include="Utils\EnvHelper.cs" />
+    <Compile Include="ViewModel\FreeLanDetectionViewModel.cs" />
+    <Compile Include="View\FreeLanDetectionWindow.xaml.cs">
+      <DependentUpon>FreeLanDetectionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\ConfigurationModel.cs" />
-    <Compile Include="Models\FreeLanStatus.cs" />
-    <Compile Include="Models\NetworkAdapter.cs" />
-    <Compile Include="Modules\ConfigurationModule.cs" />
-    <Compile Include="Modules\FreeLanModule.cs" />
-    <Compile Include="Utils\EnvironmentUtils.cs" />
-    <Page Include="FreeLanSelectionScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -88,12 +87,12 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\FreeLanDetectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\WindowsService.cs" />
-    <Compile Include="Modules\AdapterModule.cs" />
-    <Compile Include="Modules\WebRequestModule.cs" />
-    <Compile Include="Modules\WinServicesModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
