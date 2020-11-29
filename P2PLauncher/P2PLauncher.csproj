@@ -43,6 +43,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -72,8 +73,12 @@
     <Compile Include="Utils\EnumHelper.cs" />
     <Compile Include="Utils\EnvHelper.cs" />
     <Compile Include="ViewModel\FreeLanDetectionViewModel.cs" />
+    <Compile Include="ViewModel\FreeLanStatusViewModel.cs" />
     <Compile Include="View\FreeLanDetectionWindow.xaml.cs">
       <DependentUpon>FreeLanDetectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainLauncherWindow.xaml.cs">
+      <DependentUpon>MainLauncherWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -88,6 +93,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\FreeLanDetectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainLauncherWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
