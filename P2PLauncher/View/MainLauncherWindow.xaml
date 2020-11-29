@@ -12,6 +12,7 @@
                 <Label Content="FreeLAN status: " HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
                 <Label Content="{Binding freeLanStatus.InstallationStatusStr}" HorizontalAlignment="Left" Margin="0,36,0,0" VerticalAlignment="Top" Width="237"/>
                 <Button Command="{Binding freeLanStatus.ShowDetectionWindowCommand}" Visibility="{Binding freeLanStatus.OpenDetectionWindowVisibility}" Content="Configure" HorizontalAlignment="Left" Margin="162,13,0,0" VerticalAlignment="Top" Width="75"/>
+                <Button Command="{Binding windowsServices.ShowWindowsServicesWindowCommand}" Content="Services" HorizontalAlignment="Left" Margin="162,74,0,0" VerticalAlignment="Top" Width="75"/>
             </Grid>
         </GroupBox>
     </Grid>
