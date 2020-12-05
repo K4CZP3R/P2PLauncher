@@ -25,13 +25,7 @@ namespace P2PLauncher.View
         {
             InitializeComponent();
 
-            //IDialogService dialogService = new WinDialogService();
-            IFileService fileService = new WinFileService();
-
-            DataContext = new
-            {
-                freeLanStatus = new FreeLanStatusViewModel(fileService)
-            };
+            
         }
     }
 }

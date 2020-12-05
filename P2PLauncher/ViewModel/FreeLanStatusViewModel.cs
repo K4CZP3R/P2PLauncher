@@ -16,13 +16,13 @@ namespace P2PLauncher.ViewModel
 {
     public class FreeLanStatusViewModel : INotifyPropertyChanged
     {
-        private readonly FreeLanDetection _freeLanDetection;
+        //private readonly FreeLanDetection _freeLanDetection;
         private readonly IFileService _fileService;
 
         public FreeLanStatusViewModel(IFileService fileService)
         {
             this._fileService = fileService;
-            this._freeLanDetection = new FreeLanDetection(_fileService);
+           // this._freeLanDetection = new FreeLanDetection(_fileService);
 
             QueryInstallationStatus();
         }
@@ -55,7 +55,7 @@ namespace P2PLauncher.ViewModel
 
         private void QueryInstallationStatus()
         {
-            InstallationStatus = _freeLanDetection.GetInstallationStatus();
+           // InstallationStatus = _freeLanDetection.GetInstallationStatus();
         }
 
         public string InstallationStatusStr { get; set; }

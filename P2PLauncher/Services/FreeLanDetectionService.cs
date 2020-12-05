@@ -1,28 +1,26 @@
-﻿using P2PLauncher.Services;
+﻿using P2PLauncher.Model;
 using P2PLauncher.Utils;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P2PLauncher.Model
+namespace P2PLauncher.Services
 {
-    public class FreeLanDetection
+    public class FreeLanDetectionService
     {
-
         private readonly string FreeLanExecutableLocation = "bin\\freelan.exe";
         private readonly string ProgramRootDir = "FreeLAN";
         private readonly string DownloadUrl = "https://www.freelan.org/download.html#windows";
         private readonly IFileService _fileService;
+        private readonly IDialogService dialogService;
 
-        public FreeLanDetection(IFileService fileService)
+        public FreeLanDetectionService(IFileService fileService, IDialogService dialogService)
         {
             this._fileService = fileService;
-
+            this.dialogService = dialogService;
         }
-
 
         public string GetDownloadUrl()
         {
@@ -36,6 +34,16 @@ namespace P2PLauncher.Model
         private bool IsPathValid()
         {
             return _fileService.CheckPath(Properties.Settings.Default.FreeLanExecutableLocation, true);
+        }
+
+        public bool SelectPath()
+        {
+            if(dialogService.OpenFileDialog())
+            {
+                SetFreelanPath(dialogService.FilePath);
+                return true;
+            }
+            return false;
         }
 
 
@@ -76,7 +84,6 @@ namespace P2PLauncher.Model
             return false;
 
         }
-
 
 
     }

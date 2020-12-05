@@ -64,7 +64,6 @@
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
     <Compile Include="Model\FreeLanInstallationStatus.cs" />
-    <Compile Include="Model\FreeLanDetection.cs" />
     <Compile Include="Model\NetworkAdapter.cs" />
     <Compile Include="Model\NetworkAdapterListItem.cs" />
     <Compile Include="Model\NetworkAdapters.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="Model\WindowsServiceListItem.cs" />
     <Compile Include="Model\WindowsServices.cs" />
     <Compile Include="Services\Commands\RelayCommand.cs" />
+    <Compile Include="Services\FreeLanDetectionService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\WinDialogService.cs" />

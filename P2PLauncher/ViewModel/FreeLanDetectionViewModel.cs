@@ -23,7 +23,7 @@ namespace P2PLauncher.ViewModel
 
         private readonly IDialogService _dialogService;
         private readonly IFileService _fileService;
-        private readonly FreeLanDetection freeLanDetection;
+        //private readonly FreeLanDetection freeLanDetection;
 
 
         private string installationInfo;
@@ -94,7 +94,7 @@ namespace P2PLauncher.ViewModel
         {
             this._dialogService = dialogService;
             this._fileService = fileService;
-            this.freeLanDetection = new FreeLanDetection(_fileService);
+            //this.freeLanDetection = new FreeLanDetection(_fileService);
 
             QueryInstallationStatus();
             QueryUpdateHelp();
@@ -112,7 +112,7 @@ namespace P2PLauncher.ViewModel
                 return _showDownloadSectionCommand ??
                     (_showDownloadSectionCommand = new RelayCommand(obj =>
                     {
-                        System.Diagnostics.Process.Start(freeLanDetection.GetDownloadUrl());
+                        //System.Diagnostics.Process.Start(freeLanDetection.GetDownloadUrl());
 
                     }));
             }
@@ -126,10 +126,10 @@ namespace P2PLauncher.ViewModel
                 return _findFreeLanCommand ??
                   (_findFreeLanCommand = new RelayCommand(obj =>
                   {
-                      if (!freeLanDetection.FindFreeLan())
-                      {
-                          _dialogService.ShowMessage("Could not locate FreeLan, select it manually.", "FreeLan not found");
-                      }
+                      //if (!freeLanDetection.FindFreeLan())
+                      //{
+                      //    _dialogService.ShowMessage("Could not locate FreeLan, select it manually.", "FreeLan not found");
+                      //}
                       QueryInstallationStatus();
 
                   }));
@@ -146,7 +146,7 @@ namespace P2PLauncher.ViewModel
                     {
                         if (_dialogService.OpenFileDialog())
                         {
-                            freeLanDetection.SetFreelanPath(_dialogService.FilePath);
+                        //    freeLanDetection.SetFreelanPath(_dialogService.FilePath);
                         }
                         QueryInstallationStatus();
 
@@ -163,7 +163,7 @@ namespace P2PLauncher.ViewModel
 
         private void QueryInstallationStatus()
         {
-            InstallationStatus = freeLanDetection.GetInstallationStatus();
+            //InstallationStatus = freeLanDetection.GetInstallationStatus();
         }
         private void QueryUpdateHelp()
         {
