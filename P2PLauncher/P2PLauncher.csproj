@@ -64,6 +64,7 @@
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
     <Compile Include="Model\FreeLanInstallationStatus.cs" />
+    <Compile Include="Model\IWindow.cs" />
     <Compile Include="Model\NetworkAdapter.cs" />
     <Compile Include="Model\NetworkAdapterListItem.cs" />
     <Compile Include="Model\NetworkAdapters.cs" />

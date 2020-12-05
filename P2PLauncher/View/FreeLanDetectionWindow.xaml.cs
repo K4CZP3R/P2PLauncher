@@ -23,7 +23,7 @@ namespace P2PLauncher.View
     /// <summary>
     /// Interaction logic for FreeLanDetectionWindow.xaml
     /// </summary>
-    public partial class FreeLanDetectionWindow : Window
+    public partial class FreeLanDetectionWindow : Window, IWindow
     {
         private readonly FreeLanDetectionService freeLanDetectionService;
         private readonly IFileService fileService;
@@ -92,7 +92,7 @@ namespace P2PLauncher.View
 
         }
 
-        private void UpdateWindow()
+        public void UpdateWindow()
         {
             FreeLanInstallationStatus currentStatus = freeLanDetectionService.GetInstallationStatus();
             SetStatus(EnumHelper.GetDescription(currentStatus));

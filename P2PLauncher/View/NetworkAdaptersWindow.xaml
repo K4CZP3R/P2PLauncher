@@ -7,13 +7,9 @@
         mc:Ignorable="d"
         Title="NetworkAdaptersWindow" Height="450" Width="800">
     <Grid>
-        <ListBox HorizontalAlignment="Left" ItemsSource="{Binding NetworkAdapterListItems}" SelectedItem="{Binding SelectedNetworkAdapterListItem}" Height="314" Margin="10,95,0,0" VerticalAlignment="Top" Width="772"
-                 >
-            <ListBox.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding FlipStatusOfCurrentCommand}"/>
-            </ListBox.InputBindings>
-        </ListBox>
         <Label Content="Decide which network adapters should be turn off when you will be hosting/joining using P2PLauncher. (Disable VPN adapters)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-
+        <ListBox x:Name="ListBoxNetworkAdapters" HorizontalAlignment="Left" Height="314" Margin="10,41,0,0" VerticalAlignment="Top" Width="772"/>
+        <Label x:Name="LabelCurrentAdapter" Content="No adapter selected." HorizontalAlignment="Left" Margin="10,383,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="ButtonFlipCurrentAdapter" Click="OnFlipCurrentAdapterButton" Content="Change state" HorizontalAlignment="Left" Margin="707,389,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>

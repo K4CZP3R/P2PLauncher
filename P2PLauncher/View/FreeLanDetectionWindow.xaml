@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:P2PLauncher.View"
         mc:Ignorable="d"
-        Title="FreeLanDetectionWindow" Height="450" Width="800"
+        Title="FreeLanDetectionWindow" Height="279.779" Width="477.666"
         >
     <Grid>
         <Label x:Name="LabelStatus" Content="Status:"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
