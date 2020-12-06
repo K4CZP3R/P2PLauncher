@@ -46,5 +46,29 @@ namespace P2PLauncher.Properties {
                 this["FreeLanExecutableLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AdaptersToTurnOff {
+            get {
+                return ((string)(this["AdaptersToTurnOff"]));
+            }
+            set {
+                this["AdaptersToTurnOff"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ServicesToTurnOff {
+            get {
+                return ((string)(this["ServicesToTurnOff"]));
+            }
+            set {
+                this["ServicesToTurnOff"] = value;
+            }
+        }
     }
 }

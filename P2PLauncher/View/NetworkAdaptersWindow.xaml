@@ -11,5 +11,6 @@
         <ListBox x:Name="ListBoxNetworkAdapters" HorizontalAlignment="Left" Height="314" Margin="10,41,0,0" VerticalAlignment="Top" Width="772"/>
         <Label x:Name="LabelCurrentAdapter" Content="No adapter selected." HorizontalAlignment="Left" Margin="10,383,0,0" VerticalAlignment="Top"/>
         <Button x:Name="ButtonFlipCurrentAdapter" Click="OnFlipCurrentAdapterButton" Content="Change state" HorizontalAlignment="Left" Margin="707,389,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="ButtonSave" Click="OnSaveButton" Content="Save changes" HorizontalAlignment="Left" Margin="707,360,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>

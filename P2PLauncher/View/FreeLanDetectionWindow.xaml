@@ -9,9 +9,7 @@
         >
     <Grid>
         <Label x:Name="LabelStatus" Content="Status:"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
-        <Label Content="{Binding InstallationStatusStr}"  HorizontalAlignment="Left" Margin="55,10,0,0" VerticalAlignment="Top"/>
-        <Label Content="{Binding InstallationInfo}"  HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
-
+        
         <Button x:Name="ButtonFindFreeLan" Click="OnFindFreeLanButton"  Content="Find FreeLan" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="75"/>
         <TabControl x:Name="TabControlFreeLanLocation" HorizontalAlignment="Left" Height="100" Margin="10,119,0,0" VerticalAlignment="Top" Width="361">
             <TabItem Header="Locate it">
