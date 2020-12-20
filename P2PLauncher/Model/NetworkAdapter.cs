@@ -38,9 +38,14 @@ namespace P2PLauncher.Model
             return this;
         }
 
+        /// <summary>
+        /// Returns representation of this object in string.
+        /// </summary>
+        /// <returns>String containing all data stored in this object.</returns>
         public override string ToString()
         {
-            return $"{Name} - {ConnectionId} - {Enabled}";
+            return $"{Description}/{ID}/{Manufacturer}/{Name}/{ConnectionId}/{ProductName}/{ServiceName}";
         }
+        
     }
 }
