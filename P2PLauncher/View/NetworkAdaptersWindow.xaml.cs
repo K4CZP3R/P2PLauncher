@@ -1,5 +1,4 @@
 ﻿using P2PLauncher.Model;
-using P2PLauncher.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,9 +85,10 @@ namespace P2PLauncher.View
         {
             List<NetworkAdapter> adapters = networkAdapters.GetNetworkAdapters();
             string[] adaptersToDisable = networkAdapters.GetAdapterNamesToDisable();
-            adapters.RemoveAt(new Random().Next(0, 3));
-
+            
             NetworkAdaptersEnabled.Clear();
+            NetworkAdaptersDisabled.Clear();
+
             foreach (NetworkAdapter adapter in adapters)
             {
                 if (adaptersToDisable.Contains(adapter.Name))

@@ -1,7 +1,6 @@
 ﻿using P2PLauncher.Model;
 using P2PLauncher.Services;
 using P2PLauncher.Utils;
-using P2PLauncher.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

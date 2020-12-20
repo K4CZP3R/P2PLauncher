@@ -22,6 +22,12 @@ namespace P2PLauncher.Services
             this.dialogService = dialogService;
         }
 
+        public string GetFreeLanExecutableLocation()
+        {
+            return Properties.Settings.Default.FreeLanExecutableLocation;
+
+        }
+
         /// <summary>
         /// Returns FreeLan download URL.
         /// </summary>

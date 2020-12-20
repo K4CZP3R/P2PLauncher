@@ -58,5 +58,17 @@ namespace P2PLauncher.Properties {
                 this["AdaptersToDisable"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ServicesToDisable {
+            get {
+                return ((string)(this["ServicesToDisable"]));
+            }
+            set {
+                this["ServicesToDisable"] = value;
+            }
+        }
     }
 }

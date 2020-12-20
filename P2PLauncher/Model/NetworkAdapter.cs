@@ -44,7 +44,7 @@ namespace P2PLauncher.Model
         /// <returns>String containing all data stored in this object.</returns>
         public override string ToString()
         {
-            return $"{Description}/{ID}/{Manufacturer}/{Name}/{ConnectionId}/{ProductName}/{ServiceName}";
+            return $"{Name}";
         }
         
     }
