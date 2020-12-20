@@ -55,7 +55,14 @@ namespace P2PLauncher.Utils
 
         public static string GetPublicAddress()
         {
-            return new WebClient().DownloadString("http://icanhazip.com");
+            try
+            {
+               return  new WebClient().DownloadString("http://icanhazip.com");
+            }
+            catch(Exception ex)
+            {
+                return "127.0.0.1";
+            }
         }
 
     }

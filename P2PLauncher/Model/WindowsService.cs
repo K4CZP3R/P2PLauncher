@@ -29,6 +29,23 @@ namespace P2PLauncher.Model
             return $"{DisplayName} - {Name} - {Type} - {Status}";
         }
 
+        public void Enable()
+        {
+            System.Diagnostics.ProcessStartInfo psi =
+           new System.Diagnostics.ProcessStartInfo("net", "start \"" + Name + "\" /y");
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+            p.StartInfo = psi;
+            p.Start();  
+        }
+        public void Disable()
+        {
+            System.Diagnostics.ProcessStartInfo psi =
+                        new System.Diagnostics.ProcessStartInfo("net", "stop \"" + Name + "\" /y");
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+            p.StartInfo = psi;
+            p.Start();
+        }
+
 
     }
 }

@@ -15,6 +15,7 @@ namespace P2PLauncher.Services
 
         private Thread thread;
         private Process process;
+        private ThreadStart threadStart;
 
         private string passphrase;
         private string hostip;
@@ -47,13 +48,9 @@ namespace P2PLauncher.Services
 
         public void StopFreeLan()
         {
-            if(process != null)
-            {
-                process.Kill();
-            }
             if(thread != null)
             {
-                thread.Abort();
+                process.Kill();
             }
         }
         public bool StartFreeLan()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Management;
 
 namespace P2PLauncher.Model
@@ -76,6 +77,20 @@ namespace P2PLauncher.Model
             }
 
             return saved.Split(',');
+        }
+        public List<NetworkAdapter> GetAdaptersToDisable()
+        {
+            string[] toDisable = GetAdapterNamesToDisable();
+            List<NetworkAdapter> toDisableList = new List<NetworkAdapter>();
+            foreach (NetworkAdapter w in GetNetworkAdapters())
+            {
+                if (toDisable.Contains(w.Name))
+                {
+                    toDisableList.Add(w);
+                }
+            }
+            return toDisableList;
+
         }
     }
 }

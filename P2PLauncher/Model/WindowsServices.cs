@@ -36,6 +36,21 @@ namespace P2PLauncher.Model
             return withType;
         }
 
+        public List<WindowsService> GetServicesToDisable()
+        {
+            string[] toDisable = GetServiceNamesToDisable();
+            List<WindowsService> toDisableList = new List<WindowsService>();
+            foreach(WindowsService w in GetServices())
+            {
+                if(toDisable.Contains(w.Name))
+                {
+                    toDisableList.Add(w);
+                }
+            }
+            return toDisableList;
+
+        }
+
         public void SaveServicesToDisable(List<WindowsService> services)
         {
             string toSave = "";

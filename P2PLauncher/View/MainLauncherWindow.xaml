@@ -26,7 +26,7 @@
             <TabItem Header="Host">
                 <Grid Background="#FFE5E5E5">
                     <Button Content="Start" Click="OnHostStart" HorizontalAlignment="Left" Margin="339,213,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button Content="Stop" HorizontalAlignment="Left" Margin="419,213,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button Content="Stop" Click="OnFreeLanStop" HorizontalAlignment="Left" Margin="419,213,0,0" VerticalAlignment="Top" Width="75"/>
                     <Label Content="Password" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="TextBoxHostPassword" HorizontalAlignment="Left" Height="23" Margin="75,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
 
@@ -35,7 +35,7 @@
             <TabItem Header="Client">
                 <Grid Background="#FFE5E5E5">
                     <Button Content="Start" Click="OnClientStart" HorizontalAlignment="Left" Margin="339,213,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button Content="Stop"  HorizontalAlignment="Left" Margin="419,213,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button Content="Stop" Click="OnFreeLanStop"  HorizontalAlignment="Left" Margin="419,213,0,0" VerticalAlignment="Top" Width="75"/>
                     <Label Content="Host" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="TextBoxHost" HorizontalAlignment="Left" Height="23" Margin="75,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
                     <TextBox x:Name="TextBoxId" HorizontalAlignment="Left" Height="23" Margin="75,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>

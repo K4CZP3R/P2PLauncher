@@ -91,6 +91,14 @@ namespace P2PLauncher.View
         }
         private void OnHostStart(object sender, RoutedEventArgs e)
         {
+            foreach (WindowsService w in windowsServices.GetServicesToDisable())
+            {
+                w.Disable();
+            }
+            foreach (NetworkAdapter a in networkAdapters.GetAdaptersToDisable())
+            {
+                a.Disable();
+            }
             freeLanService.SetHostMode(true);
             freeLanService.SetPassphrase(TextBoxHostPassword.Text);
             if(freeLanService.StartFreeLan())
@@ -99,6 +107,15 @@ namespace P2PLauncher.View
         }
         private void OnClientStart(object sender, RoutedEventArgs e)
         {
+            foreach(WindowsService w in windowsServices.GetServicesToDisable())
+            {  
+                w.Disable();
+            }
+            foreach(NetworkAdapter a in networkAdapters.GetAdaptersToDisable())
+            {
+                a.Disable();
+            }
+
             freeLanService.SetHostMode(false);
             freeLanService.SetPassphrase(TextBoxPassword.Text);
             freeLanService.SetHostIp(TextBoxHost.Text);
@@ -108,6 +125,15 @@ namespace P2PLauncher.View
 
         private void OnFreeLanStop(object sender, RoutedEventArgs e)
         {
+            foreach (WindowsService w in windowsServices.GetServicesToDisable())
+            {
+                w.Enable();
+            }
+            foreach (NetworkAdapter a in networkAdapters.GetAdaptersToDisable())
+            {
+                a.Enable();
+            }
+
             freeLanService.StopFreeLan();
 
         }
