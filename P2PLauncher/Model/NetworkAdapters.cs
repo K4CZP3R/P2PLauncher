@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace P2PLauncher.Model
 {
@@ -28,6 +24,37 @@ namespace P2PLauncher.Model
             }
             return networkAdapters;
 
+        }
+
+        public void SaveAdaptersToDisable(List<NetworkAdapter> adapters)
+        {
+            string toSave = "";
+            for(int i =0; i< adapters.Count; i++)
+            {
+
+                toSave += adapters[i].Name;
+                if(i != adapters.Count - 1)
+                {
+                    toSave += ",";
+                }
+
+            }
+            Properties.Settings.Default.AdaptersToDisable = toSave;
+            Properties.Settings.Default.Save();
+            Properties.Settings.Default.Upgrade();
+            Properties.Settings.Default.Reload();
+        }
+
+        public string[] GetAdapterNamesToDisable()
+        {
+            List<string> _temp = new List<string>();
+            string saved = Properties.Settings.Default.AdaptersToDisable;
+            if(saved == null)
+            {
+                return new string[0];
+            }
+
+            return saved.Split(',');
         }
     }
 }

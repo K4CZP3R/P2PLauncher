@@ -22,7 +22,24 @@ namespace P2PLauncher.View
     public partial class NetworkAdaptersWindow : Window, IWindow
     {
         private readonly NetworkAdapters networkAdapters;
-        private readonly List<NetworkAdapterListItem> NetworkAdaptersList = new List<NetworkAdapterListItem>();
+
+        private readonly List<NetworkAdapter> NetworkAdaptersEnabled = new List<NetworkAdapter>();
+        private readonly List<NetworkAdapter> NetworkAdaptersDisabled = new List<NetworkAdapter>();
+
+        void MoveFromEnabledToDisabled(NetworkAdapter item)
+        {
+            NetworkAdaptersEnabled.Remove(item);
+            NetworkAdaptersDisabled.Add(item);
+            UpdateAdaptersList();
+        }
+        void MoveFromDisabledToEnabled(NetworkAdapter item)
+        {
+            NetworkAdaptersDisabled.Remove(item);
+            NetworkAdaptersEnabled.Add(item);
+            UpdateAdaptersList();
+        }
+
+
         public NetworkAdaptersWindow()
         {
             InitializeComponent();
@@ -31,42 +48,61 @@ namespace P2PLauncher.View
 
             UpdateWindow();
 
-            
+
         }
 
-        private void OnFlipCurrentAdapterButton(object sender, RoutedEventArgs e)
+        private void OnMoveToDisabledButton(object sender, RoutedEventArgs e)
         {
-            int indexToFlip = ListBoxNetworkAdapters.SelectedIndex;
-            if (indexToFlip == -1)
+            int indexToMove = ListBoxNetworkAdaptersOn.SelectedIndex;
+            if (indexToMove == -1)
                 return;
-            NetworkAdaptersList[indexToFlip].FlipStatus();
-            UpdateAdaptersList();
+
+            NetworkAdapter item = NetworkAdaptersEnabled[indexToMove];
+            MoveFromEnabledToDisabled(item);
+        }
+        private void OnMoveToEnabledButton(object sender, RoutedEventArgs e)
+        {
+            int indexToMove = ListBoxNetworkAdaptersOff.SelectedIndex;
+            if (indexToMove == -1)
+                return;
+
+            NetworkAdapter item = NetworkAdaptersDisabled[indexToMove];
+            MoveFromDisabledToEnabled(item);
 
         }
 
         private void UpdateAdaptersList()
         {
-            ListBoxNetworkAdapters.ItemsSource = new List<Object>();
-            ListBoxNetworkAdapters.ItemsSource = NetworkAdaptersList;
+            ListBoxNetworkAdaptersOff.ItemsSource = new List<Object>();
+            ListBoxNetworkAdaptersOn.ItemsSource = new List<Object>();
+            ListBoxNetworkAdaptersOn.ItemsSource = NetworkAdaptersEnabled;
+            ListBoxNetworkAdaptersOff.ItemsSource = NetworkAdaptersDisabled;
+
+            networkAdapters.SaveAdaptersToDisable(NetworkAdaptersDisabled);
 
         }
 
         public void UpdateWindow()
         {
             List<NetworkAdapter> adapters = networkAdapters.GetNetworkAdapters();
+            string[] adaptersToDisable = networkAdapters.GetAdapterNamesToDisable();
             adapters.RemoveAt(new Random().Next(0, 3));
-            
-            NetworkAdaptersList.Clear();
+
+            NetworkAdaptersEnabled.Clear();
             foreach (NetworkAdapter adapter in adapters)
             {
-                NetworkAdaptersList.Add(new NetworkAdapterListItem(adapter));
-
+                if (adaptersToDisable.Contains(adapter.Name))
+                {
+                    NetworkAdaptersDisabled.Add(adapter);
+                }
+                else
+                {
+                    NetworkAdaptersEnabled.Add(adapter);
+                }
             }
-
-
             UpdateAdaptersList();
 
-            
+
         }
     }
 }

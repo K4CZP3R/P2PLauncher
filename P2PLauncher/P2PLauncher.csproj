@@ -66,7 +66,6 @@
     <Compile Include="Model\FreeLanInstallationStatus.cs" />
     <Compile Include="Model\IWindow.cs" />
     <Compile Include="Model\NetworkAdapter.cs" />
-    <Compile Include="Model\NetworkAdapterListItem.cs" />
     <Compile Include="Model\NetworkAdapters.cs" />
     <Compile Include="Model\WindowsService.cs" />
     <Compile Include="Model\WindowsServiceListItem.cs" />
@@ -81,7 +80,6 @@
     <Compile Include="Utils\EnvHelper.cs" />
     <Compile Include="ViewModel\FreeLanDetectionViewModel.cs" />
     <Compile Include="ViewModel\FreeLanStatusViewModel.cs" />
-    <Compile Include="ViewModel\NetworkServicesViewModel.cs" />
     <Compile Include="ViewModel\WindowsServicesViewModel.cs" />
     <Compile Include="View\FreeLanDetectionWindow.xaml.cs">
       <DependentUpon>FreeLanDetectionWindow.xaml</DependentUpon>
