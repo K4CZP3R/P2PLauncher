@@ -58,6 +58,10 @@ namespace P2PLauncher.View
         {
             LabelAdaptersToDisableValue.Content = content;
         }
+        private void SetPublicAddressValueLabel(string content)
+        {
+            LabelPublicAddress.Content = content;
+        }
 
 
         public void UpdateFreeLanStatus()
@@ -69,6 +73,8 @@ namespace P2PLauncher.View
         {
             SetAdaptersToDisableValueLabel(networkAdapters.GetAdapterNamesToDisable().Length.ToString());
             SetServicesToDisableValueLabel(windowsServices.GetServiceNamesToDisable().Length.ToString());
+            SetPublicAddressValueLabel(EnvHelper.GetPublicAddress());
+
         }
 
         private void OnOpenFreeLanSettingsButton(object sender, RoutedEventArgs e)

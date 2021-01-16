@@ -6,10 +6,12 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:P2PLauncher.View"
         mc:Ignorable="d"
-        Title="MainLauncherWindow" Height="450" Width="800">
+        Title="MainLauncherWindow" Height="321" Width="717.5"
+        ResizeMode="NoResize"
+        >
     <Grid>
-        <GroupBox Header="Information" HorizontalAlignment="Left" Height="399" Margin="525,10,0,0" VerticalAlignment="Top" Width="257">
-            <Grid HorizontalAlignment="Left" Height="319" Margin="0,0,0,0" VerticalAlignment="Top" Width="247">
+        <GroupBox Header="Information" HorizontalAlignment="Left" Height="271" Margin="405,10,0,0" VerticalAlignment="Top" Width="297">
+            <Grid HorizontalAlignment="Left" Height="252" Margin="0,0,-12,-4" VerticalAlignment="Top" Width="297">
                 <Label Content="FreeLAN status: " HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
                 <Label Content="Label" x:Name="LabelFreeLanStatusValue" HorizontalAlignment="Left" Margin="101,10,0,0" VerticalAlignment="Top"/>
                 <Button Click="OnOpenFreeLanSettingsButton" Content="Configure" x:Name="ButtonOpenFreeLanSettings" HorizontalAlignment="Left" Margin="101,41,0,0" VerticalAlignment="Top" Width="75"/>
@@ -19,29 +21,37 @@
                 <Label Content="Services to disable:" HorizontalAlignment="Left" Margin="0,122,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="LabelServicesToDisableValue" Content="20" HorizontalAlignment="Left" Margin="120,122,0,0" VerticalAlignment="Top"/>
                 <Button Click="OnOpenServicesSettingsButton" x:Name="ButtonOpenServicesSettings" Content="Configure" HorizontalAlignment="Left" Margin="101,153,0,0" VerticalAlignment="Top" Width="75"/>
+                <Label Content="Public address to use:" HorizontalAlignment="Left" Margin="0,178,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="LabelPublicAddress" Content="0.0.0.0" HorizontalAlignment="Left" Margin="130,178,0,0" VerticalAlignment="Top" Width="107"/>
+
 
             </Grid>
         </GroupBox>
-        <TabControl HorizontalAlignment="Left" Height="271" Margin="10,10,0,0" VerticalAlignment="Top" Width="510">
+        <TabControl HorizontalAlignment="Left" Height="271" Margin="10,10,0,0" VerticalAlignment="Top" Width="390">
             <TabItem Header="Host">
                 <Grid Background="#FFE5E5E5">
-                    <Button Content="Start" Click="OnHostStart" HorizontalAlignment="Left" Margin="339,213,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button Content="Stop" Click="OnFreeLanStop" HorizontalAlignment="Left" Margin="419,213,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Label Content="Password" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="TextBoxHostPassword" HorizontalAlignment="Left" Height="23" Margin="75,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+                    <Button Content="Start" Click="OnHostStart" HorizontalAlignment="Left" Margin="219,213,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button Content="Stop" Click="OnFreeLanStop" HorizontalAlignment="Left" Margin="299,213,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="11,15,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TextBoxHostPassword" HorizontalAlignment="Left" Height="23" Margin="76,18,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="Enter the password, clients will need to enter to join to you." HorizontalAlignment="Left" Margin="11,41,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
 
                 </Grid>
             </TabItem>
             <TabItem Header="Client">
                 <Grid Background="#FFE5E5E5">
-                    <Button Content="Start" Click="OnClientStart" HorizontalAlignment="Left" Margin="339,213,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button Content="Stop" Click="OnFreeLanStop"  HorizontalAlignment="Left" Margin="419,213,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Label Content="Host" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="TextBoxHost" HorizontalAlignment="Left" Height="23" Margin="75,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="TextBoxId" HorizontalAlignment="Left" Height="23" Margin="75,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-                    <Label Content="Id" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Password" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Height="23" Margin="75,67,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="Enter host's public address here." HorizontalAlignment="Left" Margin="14,37,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+                    <Label Content="Enter your ID 1-240, You will be indentificated with it." HorizontalAlignment="Left" Margin="14,88,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+                    <Label Content="Enter host's password here." HorizontalAlignment="Left" Margin="14,142,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+
+                    <Button Content="Start" Click="OnClientStart" HorizontalAlignment="Left" Margin="220,213,0,0" VerticalAlignment="Top" Width="74"/>
+                    <Button Content="Stop" Click="OnFreeLanStop"  HorizontalAlignment="Left" Margin="299,213,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Label Content="Host:" HorizontalAlignment="Left" Margin="14,11,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TextBoxHost" HorizontalAlignment="Left" Height="23" Margin="75,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="TextBoxId" HorizontalAlignment="Left" Height="23" Margin="75,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="Id:" HorizontalAlignment="Left" Margin="14,62,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="14,116,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Height="23" Margin="75,119,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
 
                 </Grid>
             </TabItem>
