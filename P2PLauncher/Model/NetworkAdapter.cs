@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -49,18 +50,22 @@ namespace P2PLauncher.Model
 
         public void Enable()
         {
-            System.Diagnostics.ProcessStartInfo psi =
-           new System.Diagnostics.ProcessStartInfo("netsh", "interface set interface \"" + ConnectionId + "\" enable");
-            System.Diagnostics.Process p = new System.Diagnostics.Process();
+            ProcessStartInfo psi =
+           new ProcessStartInfo("netsh", "interface set interface \"" + ConnectionId + "\" enable");
+            Process p = new Process();
             p.StartInfo = psi;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.Start();
         }
         public void Disable()
         {
-            System.Diagnostics.ProcessStartInfo psi =
-                        new System.Diagnostics.ProcessStartInfo("netsh", "interface set interface \"" + ConnectionId + "\" disable");
-            System.Diagnostics.Process p = new System.Diagnostics.Process();
+            ProcessStartInfo psi =
+                        new ProcessStartInfo("netsh", "interface set interface \"" + ConnectionId + "\" disable");
+            Process p = new Process();
             p.StartInfo = psi;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.Start();
         }
         
