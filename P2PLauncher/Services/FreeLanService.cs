@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace P2PLauncher.Services
         private string relayMode;
         private bool showShell;
         private StreamWriter debugWrite;
+        private bool turnedOffFreeLanService;
 
         public void SetPassphrase(string content)
         {
@@ -50,17 +52,56 @@ namespace P2PLauncher.Services
             showShell = c;
         }
         
+
+
         public FreeLanService(FreeLanDetectionService freeLanDetectionService, IDialogService dialogService)
         {
             this.freeLanDetectionService = freeLanDetectionService;
             this.dialogService = dialogService;
         }
 
+
+        public bool GetFreeLanServiceStatus()
+        {
+            ServiceController sc = new ServiceController("FreeLAN Service");
+            switch(sc.Status)
+            {
+                case ServiceControllerStatus.Running:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        public void SetFreeLanServiceStatus(bool start)
+        {
+            
+            ServiceController sc = new ServiceController("FreeLAN Service");
+            if(start)
+            {
+                try
+                {
+                    sc.Start();
+                }
+                catch(InvalidOperationException ex)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                sc.Stop();
+            }
+            
+        }
         public void StopFreeLan()
         {
             if(!process.HasExited)
                 process.Kill();
             debugWrite.Close();
+            if(turnedOffFreeLanService)
+            {
+                SetFreeLanServiceStatus(true);
+            }
         }
         public bool StartFreeLan()
         {
@@ -68,6 +109,12 @@ namespace P2PLauncher.Services
             {
                 dialogService.ShowMessage("FreeLan is not confiured! do it", "JUST DO IT!");
                 return false;
+            }
+
+            if(GetFreeLanServiceStatus())
+            {
+                turnedOffFreeLanService = true;
+                SetFreeLanServiceStatus(false);
             }
 
 

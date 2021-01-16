@@ -23,7 +23,7 @@ namespace P2PLauncher.View
         private readonly WindowsServices windowsServices;
 
         private readonly List<WindowsService> windowsServicesEnabled = new List<WindowsService>();
-        private readonly List<WindowsService> windowsServicesDisabled= new List<WindowsService>();
+        private readonly List<WindowsService> windowsServicesDisabled = new List<WindowsService>();
 
         private readonly string[] servicesToInclude =
         {
@@ -31,7 +31,7 @@ namespace P2PLauncher.View
             "Radmin",
             "Hamachi",
             "Virtual Private Network"
-            
+
         };
         private bool commonFilter = false;
         private string filterWith;
@@ -94,13 +94,13 @@ namespace P2PLauncher.View
         {
             List<WindowsService> services = windowsServices.GetServices();
             string[] servicesToDisable = windowsServices.GetServiceNamesToDisable();
-            
+
             windowsServicesEnabled.Clear();
             windowsServicesDisabled.Clear();
 
             foreach (WindowsService service in services)
             {
-                
+
                 if (servicesToDisable.Contains(service.Name))
                 {
                     windowsServicesDisabled.Add(service);
@@ -109,22 +109,22 @@ namespace P2PLauncher.View
                 {
                     if (filterWith != null)
                     {
-                        if (!service.ToString().Contains(filterWith))
+                        if (!service.ToString().ToLower().Contains(filterWith))
                         {
                             continue;
                         }
 
                     }
-                        bool addToTheList = !commonFilter;
-                        foreach (string filter in servicesToInclude)
+                    bool addToTheList = !commonFilter;
+                    foreach (string filter in servicesToInclude)
+                    {
+                        if (service.ToString().Contains(filter))
                         {
-                            if (service.ToString().Contains(filter))
-                            {
-                                addToTheList = true;
-                            }
-
+                            addToTheList = true;
                         }
-                    
+
+                    }
+
                     if (addToTheList)
                     {
                         windowsServicesEnabled.Add(service);

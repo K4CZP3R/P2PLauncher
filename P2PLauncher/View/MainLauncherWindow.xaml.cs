@@ -112,8 +112,13 @@ namespace P2PLauncher.View
             window.ShowDialog();
             UpdateWindow();
         }
-        private void OnHostStart(object sender, RoutedEventArgs e)
+        
+        private void OnCommonStart()
         {
+            if (freeLanService.GetFreeLanServiceStatus())
+            {
+                MessageBox.Show("FreeLAN is already running in the background. To prevent this app from failing, it will be disabled.");
+            }
             foreach (WindowsService w in windowsServices.GetServicesToDisable())
             {
                 w.Disable();
@@ -122,10 +127,19 @@ namespace P2PLauncher.View
             {
                 a.Disable();
             }
+
+        }
+
+        private void OnHostStart(object sender, RoutedEventArgs e)
+        {
+            OnCommonStart();
+            
+
             freeLanService.SetHostMode(true);
             freeLanService.SetPassphrase(TextBoxHostPassword.Text);
             freeLanService.SetRelayMode(CheckBoxHostRelay.IsChecked.Value);
             freeLanService.SetShowShell(CheckBoxDebug.IsChecked.Value);
+            freeLanService.GetFreeLanServiceStatus();
             bool started = freeLanService.StartFreeLan();
             if (started)
             {
@@ -136,14 +150,7 @@ namespace P2PLauncher.View
         }
         private void OnClientStart(object sender, RoutedEventArgs e)
         {
-            foreach (WindowsService w in windowsServices.GetServicesToDisable())
-            {
-                w.Disable();
-            }
-            foreach (NetworkAdapter a in networkAdapters.GetAdaptersToDisable())
-            {
-                a.Disable();
-            }
+            OnCommonStart();
 
             freeLanService.SetHostMode(false);
             freeLanService.SetPassphrase(TextBoxPassword.Text);
