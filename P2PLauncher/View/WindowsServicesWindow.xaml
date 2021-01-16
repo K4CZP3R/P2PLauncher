@@ -1,0 +1,19 @@
+﻿<Window x:Class="P2PLauncher.View.WindowsServicesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2PLauncher.View"
+        mc:Ignorable="d"
+        Title="WindowsServicesWindow" Height="450" Width="800">
+    <Grid>
+        <Label Content="Decide which windows services should be turn off when you will be hosting/joining using P2PLauncher. (Disable VPN services)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="ListBoxWindowsServicesOff" HorizontalAlignment="Left" Height="289" Margin="422,66,0,0" VerticalAlignment="Top" Width="360"/>
+        <ListBox x:Name="ListBoxWindowsServicesOn" HorizontalAlignment="Left" Height="289" Margin="10,66,0,0" VerticalAlignment="Top" Width="360"/>
+        <Button Content=">" x:Name="ButtonMoveToDisabled" Click="OnMoveToDisabledButton" HorizontalAlignment="Left" Margin="375,310,0,0" VerticalAlignment="Top" Width="42"/>
+        <Button Content="&lt;" x:Name="ButtonMoveToEnabled" HorizontalAlignment="Left" Click="OnMoveToEnabledButton" Margin="375,335,0,0" VerticalAlignment="Top" Width="42"/>
+        <Label Content="Do nothing" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+        <Label Content="Disable" HorizontalAlignment="Left" Margin="422,40,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

@@ -5,25 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:P2PLauncher.View"
         mc:Ignorable="d"
-        Title="FreeLanDetectionWindow" Height="450" Width="800"
+        Title="FreeLanDetectionWindow" Height="279.779" Width="477.666"
         >
     <Grid>
-        <Label Content="Status:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
-        <Label Content="{Binding InstallationStatusStr}"  HorizontalAlignment="Left" Margin="55,10,0,0" VerticalAlignment="Top"/>
-        <Label Content="{Binding InstallationInfo}"  HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
-
-        <Button x:Name="btnAutoSearch" Command="{Binding FindFreeLanCommand}" Visibility="{Binding AutoSearchVisibility}" Content="Find FreeLan" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="75"/>
-        <TabControl x:Name="tabControl" Visibility="{Binding TabVisibility}" HorizontalAlignment="Left" Height="100" Margin="10,119,0,0" VerticalAlignment="Top" Width="361">
+        <Label x:Name="LabelStatus" Content="Status:"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
+        
+        <Button x:Name="ButtonFindFreeLan" Click="OnFindFreeLanButton"  Content="Find FreeLan" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="75"/>
+        <TabControl x:Name="TabControlFreeLanLocation" HorizontalAlignment="Left" Height="100" Margin="10,119,0,0" VerticalAlignment="Top" Width="361">
             <TabItem Header="Locate it">
                 <Grid Background="#FFE5E5E5">
-                    <Label Content="{Binding SelectedPath}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0"/>
-                    <Button Command="{Binding SelectFreeLanPath}" Content="Select..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="88*"/>
+                        <ColumnDefinition Width="267*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="LabelSelectFreeLanPathHint" Content="Select freelan.exe" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0" Grid.ColumnSpan="2"/>
+                    <Button x:Name="ButtonSelectFreeLanPath" Click="OnSelectFreeLanPathButton" Content="Select..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Download">
                 <Grid Background="#FFE5E5E5">
-                    <Label Content="{Binding DownloadHelp}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0"/>
-                    <Button Content="Download" Command="{Binding ShowDownloadSectionCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Label x:Name="LabelDownloadFreeLanHint" Content="Here goes the download suggestion." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0"/>
+                    <Button x:Name="ButtonDownloadFreeLan" Content="Download" Click="OnDownloadFreeLanButton" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
             </TabItem>
         </TabControl>
