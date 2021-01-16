@@ -90,20 +90,25 @@ namespace P2PLauncher.Services
             }
             process.StartInfo.CreateNoWindow = !showShell;
             process.StartInfo.WindowStyle = showShell ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
-            
-            // Logging to file
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+
+            if(!showShell)
             {
-                if (!String.IsNullOrEmpty(e.Data))
+                // Logging to file
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
                 {
-                    debugWrite.WriteLine(e.Data);
-                }
-            });
+                    if (!String.IsNullOrEmpty(e.Data))
+                    {
+                        debugWrite.WriteLine(e.Data);
+                    }
+                });
+            } 
+           
 
             process.Start();
-            process.BeginOutputReadLine();
+            if(!showShell)
+                process.BeginOutputReadLine();
             return !process.HasExited;
         }
     }

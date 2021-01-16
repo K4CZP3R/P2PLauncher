@@ -190,5 +190,13 @@ namespace P2PLauncher.View
             UpdateNumbers();
 
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(!freeLanService.process.HasExited)
+            {
+                OnFreeLanStop();
+            }
+        }
     }
 }

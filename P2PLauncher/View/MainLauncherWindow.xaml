@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:P2PLauncher.View"
         mc:Ignorable="d"
         Title="MainLauncherWindow" Height="346" Width="717.5"
-        ResizeMode="NoResize"
+        ResizeMode="NoResize" Closing="Window_Closing"
         >
     <Grid>
         <GroupBox Header="Information" HorizontalAlignment="Left" Height="297" Margin="405,10,0,0" VerticalAlignment="Top" Width="297">
