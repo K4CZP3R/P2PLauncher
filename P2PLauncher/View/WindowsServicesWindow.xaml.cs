@@ -25,6 +25,16 @@ namespace P2PLauncher.View
         private readonly List<WindowsService> windowsServicesEnabled = new List<WindowsService>();
         private readonly List<WindowsService> windowsServicesDisabled= new List<WindowsService>();
 
+        private readonly string[] servicesToInclude =
+        {
+            "VPN",
+            "Radmin",
+            "Hamachi",
+            "Virtual Private Network"
+            
+        };
+        private bool commonFilter = false;
+        private string filterWith;
 
         public WindowsServicesWindow()
         {
@@ -87,15 +97,38 @@ namespace P2PLauncher.View
             
             windowsServicesEnabled.Clear();
             windowsServicesDisabled.Clear();
+
             foreach (WindowsService service in services)
             {
+                
                 if (servicesToDisable.Contains(service.Name))
                 {
                     windowsServicesDisabled.Add(service);
                 }
                 else
                 {
-                    windowsServicesEnabled.Add(service);
+                    if (filterWith != null)
+                    {
+                        if (!service.ToString().Contains(filterWith))
+                        {
+                            continue;
+                        }
+
+                    }
+                        bool addToTheList = !commonFilter;
+                        foreach (string filter in servicesToInclude)
+                        {
+                            if (service.ToString().Contains(filter))
+                            {
+                                addToTheList = true;
+                            }
+
+                        }
+                    
+                    if (addToTheList)
+                    {
+                        windowsServicesEnabled.Add(service);
+                    }
                 }
             }
             UpdateAdaptersList();
@@ -103,5 +136,22 @@ namespace P2PLauncher.View
 
         }
 
+        private void TextBoxSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            filterWith = TextBoxSearch.Text.ToLower();
+            UpdateWindow();
+        }
+
+        private void CheckBoxFilter_Checked(object sender, RoutedEventArgs e)
+        {
+            commonFilter = true;
+            UpdateWindow();
+        }
+
+        private void CheckBoxFilter_Unchecked(object sender, RoutedEventArgs e)
+        {
+            commonFilter = false;
+            UpdateWindow();
+        }
     }
 }
