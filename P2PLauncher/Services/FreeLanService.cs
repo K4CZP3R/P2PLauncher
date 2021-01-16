@@ -24,8 +24,7 @@ namespace P2PLauncher.Services
         private string relayMode;
         private bool showShell;
         private StreamWriter debugWrite;
-        private bool turnedOffFreeLanService;
-
+        
         public void SetPassphrase(string content)
         {
             passphrase = content;
@@ -98,10 +97,7 @@ namespace P2PLauncher.Services
             if(!process.HasExited)
                 process.Kill();
             debugWrite.Close();
-            if(turnedOffFreeLanService)
-            {
-                SetFreeLanServiceStatus(true);
-            }
+            
         }
         public bool StartFreeLan()
         {
@@ -113,7 +109,6 @@ namespace P2PLauncher.Services
 
             if(GetFreeLanServiceStatus())
             {
-                turnedOffFreeLanService = true;
                 SetFreeLanServiceStatus(false);
             }
 

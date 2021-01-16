@@ -61,7 +61,7 @@
                     <Label Content="Id:" HorizontalAlignment="Left" Margin="14,62,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     <Label Content="Password:" HorizontalAlignment="Left" Margin="14,116,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     <TextBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Height="23" Margin="60,119,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
-                    <CheckBox x:Name="CheckBoxClientRelay" IsChecked="True" Content="Relay mode" HorizontalAlignment="Left" Margin="14,170,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <CheckBox x:Name="CheckBoxClientRelay" IsChecked="False" Content="Relay mode" HorizontalAlignment="Left" Margin="14,170,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     <Label Content="Relay mode (advanced)." HorizontalAlignment="Left" Margin="14,185,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" Grid.ColumnSpan="2"/>
 
                 </Grid>
