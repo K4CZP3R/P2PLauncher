@@ -33,6 +33,7 @@ namespace P2PLauncher.View
         private DispatcherTimer processCheck;
         private readonly string donators = "Striderstroke";
 
+        
         public MainLauncherWindow()
         {
             InitializeComponent();
@@ -47,6 +48,12 @@ namespace P2PLauncher.View
                 dialogService);
 
             UpdateWindow();
+
+            if(!EnvHelper.IsAdministrator())
+            {
+                MessageBox.Show("To use this application you will need administrator privileges!");
+                System.Environment.Exit(0);
+            }
         }
 
         private void SetFreeLanStatusValueLabel(string content)
