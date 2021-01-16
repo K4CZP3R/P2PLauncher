@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,14 +14,15 @@ namespace P2PLauncher.Services
         private readonly FreeLanDetectionService freeLanDetectionService;
         private readonly IDialogService dialogService;
 
-        private Thread thread;
-        private Process process;
-        private ThreadStart threadStart;
-
+        public Process process;
+        
         private string passphrase;
         private string hostip;
         private string clientid;
         private bool hostMode;
+        private string relayMode;
+        private bool showShell;
+        private StreamWriter debugWrite;
 
         public void SetPassphrase(string content)
         {
@@ -39,6 +41,14 @@ namespace P2PLauncher.Services
             hostMode = c;
         }
 
+        public void SetRelayMode(bool c)
+        {
+            relayMode = c ? "yes" : "no";
+        }
+        public void SetShowShell(bool c)
+        {
+            showShell = c;
+        }
         
         public FreeLanService(FreeLanDetectionService freeLanDetectionService, IDialogService dialogService)
         {
@@ -48,10 +58,9 @@ namespace P2PLauncher.Services
 
         public void StopFreeLan()
         {
-            if(thread != null)
-            {
+            if(!process.HasExited)
                 process.Kill();
-            }
+            debugWrite.Close();
         }
         public bool StartFreeLan()
         {
@@ -60,6 +69,10 @@ namespace P2PLauncher.Services
                 dialogService.ShowMessage("FreeLan is not confiured! do it", "JUST DO IT!");
                 return false;
             }
+
+
+            debugWrite = new StreamWriter("debug.txt");
+
             /*
              * //"freelan.exe" --security.passphrase %quoted% --tap_adapter.ipv4_address_prefix_length 9.0.0.1/24 --switch.relay_mode_enabled yes --tap_adapter.metric 1 --debug
              * //"freelan.exe" --security.passphrase %quoted% --fscp.contact %hostip%:12000 --tap_adapter.ipv4_address_prefix_length 9.0.0.%clientid%/24 --tap_adapter.metric 1 --debug
@@ -69,24 +82,29 @@ namespace P2PLauncher.Services
             process.StartInfo.FileName = freeLanDetectionService.GetFreeLanExecutableLocation();
             if(hostMode)
             {
-                process.StartInfo.Arguments = $"--security.passphrase {passphrase} --tap_adapter.ipv4_address_prefix_length 9.0.0.1/24 --switch.relay_mode_enabled yes --tap_adapter.metric 1 --debug";
+                process.StartInfo.Arguments = $"--security.passphrase {passphrase} --tap_adapter.ipv4_address_prefix_length 9.0.0.1/24 --switch.relay_mode_enabled {relayMode} --tap_adapter.metric 1 --debug";
             }
             else
             {
-                process.StartInfo.Arguments = $"--security.passphrase {passphrase} --fscp.contact {hostip}:12000 --tap_adapter.ipv4_address_prefix_length 9.0.0.{clientid}/24 --tap_adapter.metric 1 --debug";
+                process.StartInfo.Arguments = $"--security.passphrase {passphrase} --fscp.contact {hostip}:12000 --switch.relay_mode_enabled {relayMode} --tap_adapter.ipv4_address_prefix_length 9.0.0.{clientid}/24 --tap_adapter.metric 1 --debug";
             }
-            process.StartInfo.RedirectStandardOutput = false;
+            process.StartInfo.CreateNoWindow = !showShell;
+            process.StartInfo.WindowStyle = showShell ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
+            
+            // Logging to file
             process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+            {
+                if (!String.IsNullOrEmpty(e.Data))
+                {
+                    debugWrite.WriteLine(e.Data);
+                }
+            });
 
-            ThreadStart ths = new ThreadStart(() => process.Start());
-            thread = new Thread(ths);
-            thread.Start();
-            return true;
+            process.Start();
+            process.BeginOutputReadLine();
+            return !process.HasExited;
         }
-
-
-
-
     }
 }

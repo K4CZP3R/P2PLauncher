@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace P2PLauncher.View
 {
@@ -28,6 +30,7 @@ namespace P2PLauncher.View
         private readonly IFileService fileService;
         private readonly IDialogService dialogService;
         private readonly FreeLanService freeLanService;
+        private DispatcherTimer processCheck;
 
         public MainLauncherWindow()
         {
@@ -43,7 +46,6 @@ namespace P2PLauncher.View
                 dialogService);
 
             UpdateWindow();
-
         }
 
         private void SetFreeLanStatusValueLabel(string content)
@@ -61,6 +63,10 @@ namespace P2PLauncher.View
         private void SetPublicAddressValueLabel(string content)
         {
             LabelPublicAddress.Content = content;
+        }
+        private void SetStateValueLabel(string content)
+        {
+            LabelStateValue.Content = content;
         }
 
 
@@ -107,17 +113,23 @@ namespace P2PLauncher.View
             }
             freeLanService.SetHostMode(true);
             freeLanService.SetPassphrase(TextBoxHostPassword.Text);
-            if(freeLanService.StartFreeLan())
-                dialogService.ShowMessage($"Tell your friends to enter {EnvHelper.GetPublicAddress()} as Host.", "Your public ip");
-
+            freeLanService.SetRelayMode(CheckBoxHostRelay.IsChecked.Value);
+            freeLanService.SetShowShell(CheckBoxDebug.IsChecked.Value);
+            bool started = freeLanService.StartFreeLan();
+            if (started)
+            {
+                SetStateValueLabel("Host - running.");
+                StartProcessCheck();
+            }
+            
         }
         private void OnClientStart(object sender, RoutedEventArgs e)
         {
-            foreach(WindowsService w in windowsServices.GetServicesToDisable())
-            {  
+            foreach (WindowsService w in windowsServices.GetServicesToDisable())
+            {
                 w.Disable();
             }
-            foreach(NetworkAdapter a in networkAdapters.GetAdaptersToDisable())
+            foreach (NetworkAdapter a in networkAdapters.GetAdaptersToDisable())
             {
                 a.Disable();
             }
@@ -126,11 +138,25 @@ namespace P2PLauncher.View
             freeLanService.SetPassphrase(TextBoxPassword.Text);
             freeLanService.SetHostIp(TextBoxHost.Text);
             freeLanService.SetClientId(TextBoxId.Text);
-            freeLanService.StartFreeLan();
+            freeLanService.SetRelayMode(CheckBoxClientRelay.IsChecked.Value);
+            freeLanService.SetShowShell(CheckBoxDebug.IsChecked.Value);
+            bool started = freeLanService.StartFreeLan();
+            if (started)
+            {
+                SetStateValueLabel("Client - running.");
+                StartProcessCheck();
+            }
+
         }
 
         private void OnFreeLanStop(object sender, RoutedEventArgs e)
         {
+            OnFreeLanStop();
+        }   
+        private void OnFreeLanStop()
+        {
+            SetStateValueLabel("Not running.");
+            freeLanService.StopFreeLan();
             foreach (WindowsService w in windowsServices.GetServicesToDisable())
             {
                 w.Enable();
@@ -139,9 +165,23 @@ namespace P2PLauncher.View
             {
                 a.Enable();
             }
+        }
 
-            freeLanService.StopFreeLan();
+        private void StartProcessCheck()
+        {
+            processCheck = new DispatcherTimer();
+            processCheck.Tick += ProcessCheck_Tick;
+            processCheck.Interval = TimeSpan.FromSeconds(1.00);
+            processCheck.Start();
+        }
 
+        private void ProcessCheck_Tick(object sender, EventArgs e)
+        {
+            if (freeLanService.process.HasExited)
+            {
+                processCheck.Stop();
+                OnFreeLanStop();
+            }
         }
 
         public void UpdateWindow()
