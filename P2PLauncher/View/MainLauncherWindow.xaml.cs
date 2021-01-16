@@ -31,6 +31,7 @@ namespace P2PLauncher.View
         private readonly IDialogService dialogService;
         private readonly FreeLanService freeLanService;
         private DispatcherTimer processCheck;
+        private readonly string donators = "Striderstroke";
 
         public MainLauncherWindow()
         {
@@ -68,7 +69,10 @@ namespace P2PLauncher.View
         {
             LabelStateValue.Content = content;
         }
-
+        private void SetDonatorsLabel(string content)
+        {
+            LabelDonators.Content = content;
+        }
 
         public void UpdateFreeLanStatus()
         {
@@ -188,12 +192,13 @@ namespace P2PLauncher.View
         {
             UpdateFreeLanStatus();
             UpdateNumbers();
+            SetDonatorsLabel(donators);
 
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(!freeLanService.process.HasExited)
+            if(freeLanService.process != null && !freeLanService.process.HasExited)
             {
                 OnFreeLanStop();
             }

@@ -66,6 +66,12 @@
 
                 </Grid>
             </TabItem>
+            <TabItem Header="Donators">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Thank you:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="LabelDonators" Content="Please Wait..." HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
