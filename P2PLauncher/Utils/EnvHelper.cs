@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -66,9 +68,21 @@ namespace P2PLauncher.Utils
             }
             catch(Exception ex)
             {
+                ExceptionHelper.ShowMessageBox(ex);
                 return "127.0.0.1";
             }
         }
+
+        public static void OpenNotepadWithFile(string fileLocation)
+        {
+            Process.Start("notepad.exe", fileLocation);
+        }
+
+        public static bool FileExists(string fileLocation)
+        {
+            return File.Exists(fileLocation);
+        }
+
 
     }
 }

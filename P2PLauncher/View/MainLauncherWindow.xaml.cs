@@ -1,4 +1,5 @@
-﻿using P2PLauncher.Model;
+﻿using P2PLauncher.Exceptions;
+using P2PLauncher.Model;
 using P2PLauncher.Services;
 using P2PLauncher.Utils;
 using System;
@@ -33,7 +34,7 @@ namespace P2PLauncher.View
         private DispatcherTimer processCheck;
         private readonly string donators = "Striderstroke";
 
-        
+
         public MainLauncherWindow()
         {
             InitializeComponent();
@@ -44,18 +45,23 @@ namespace P2PLauncher.View
             windowsServices = new WindowsServices();
             networkAdapters = new NetworkAdapters();
             freeLanService = new FreeLanService(
+                windowsServices,
                 freeLanDetectionService,
-                dialogService);
+                dialogService
+                );
 
-            UpdateWindow();
 
-            if(!EnvHelper.IsAdministrator())
+
+            if (!EnvHelper.IsAdministrator())
             {
                 MessageBox.Show("To use this application you will need administrator privileges!");
                 System.Environment.Exit(0);
             }
+
+            UpdateWindow();
         }
 
+        #region UI setters
         private void SetFreeLanStatusValueLabel(string content)
         {
             LabelFreeLanStatusValue.Content = content;
@@ -72,6 +78,10 @@ namespace P2PLauncher.View
         {
             LabelPublicAddress.Content = content;
         }
+        private void SetFreeLANAddressValueLabel(string content)
+        {
+            LabelFreeLANAddress.Content = content;
+        }
         private void SetStateValueLabel(string content)
         {
             LabelStateValue.Content = content;
@@ -80,7 +90,9 @@ namespace P2PLauncher.View
         {
             LabelDonators.Content = content;
         }
+        #endregion
 
+        #region UI
         public void UpdateFreeLanStatus()
         {
             FreeLanInstallationStatus status = freeLanDetectionService.GetInstallationStatus();
@@ -92,6 +104,38 @@ namespace P2PLauncher.View
             SetServicesToDisableValueLabel(windowsServices.GetServiceNamesToDisable().Length.ToString());
             SetPublicAddressValueLabel(EnvHelper.GetPublicAddress());
 
+        }
+
+        public void UpdateWindow()
+        {
+            UpdateFreeLanStatus();
+            UpdateNumbers();
+            SetDonatorsLabel(donators);
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (freeLanService.process != null && !freeLanService.process.HasExited)
+            {
+                OnFreeLanStop();
+            }
+        }
+
+        #endregion
+
+        #region Button actions (all)
+
+        private void OnOpenLogsClick(object sender, RoutedEventArgs e)
+        {
+            if (EnvHelper.FileExists("debug.txt"))
+            {
+                EnvHelper.OpenNotepadWithFile("debug.txt");
+            }
+            else
+            {
+                MessageBox.Show("There are no logs yet");
+            }
         }
 
         private void OnOpenFreeLanSettingsButton(object sender, RoutedEventArgs e)
@@ -112,7 +156,10 @@ namespace P2PLauncher.View
             window.ShowDialog();
             UpdateWindow();
         }
-        
+
+        #endregion
+
+        #region Button actions Tabs
         private void OnCommonStart()
         {
             if (freeLanService.GetFreeLanServiceStatus())
@@ -127,53 +174,98 @@ namespace P2PLauncher.View
             {
                 a.Disable();
             }
-
         }
 
-        private void OnHostStart(object sender, RoutedEventArgs e)
+        private void OnHubStartClick(object sender, RoutedEventArgs e)
         {
-            OnCommonStart();
-            
-
-            freeLanService.SetHostMode(true);
-            freeLanService.SetPassphrase(TextBoxHostPassword.Text);
-            freeLanService.SetRelayMode(CheckBoxHostRelay.IsChecked.Value);
-            freeLanService.SetShowShell(CheckBoxDebug.IsChecked.Value);
-            freeLanService.GetFreeLanServiceStatus();
-            bool started = freeLanService.StartFreeLan();
-            if (started)
+            try
             {
-                SetStateValueLabel("Host - running.");
-                StartProcessCheck();
+                freeLanService.SetMode(FreeLanMode.CLIENT_HUB);
+                freeLanService.SetPassphrase(TextBoxHubPassword.Text);
+                freeLanService.SetHostIp(TextBoxHubHost.Text);
+
+                OnCommonStart();
+
+                bool started = freeLanService.StartFreeLan();
+                if (started)
+                {
+                    SetStateValueLabel("Hub - running.");
+                    SetFreeLANAddressValueLabel(freeLanService.GetFreeLanAddress());
+                    StartProcessCheck();
+                }
             }
-            
+            catch (InvalidInput ex)
+            {
+                ExceptionHelper.ShowMessageBox(ex);
+            }
         }
-        private void OnClientStart(object sender, RoutedEventArgs e)
+        private void OnHostStartClick(object sender, RoutedEventArgs e)
         {
-            OnCommonStart();
-
-            freeLanService.SetHostMode(false);
-            freeLanService.SetPassphrase(TextBoxPassword.Text);
-            freeLanService.SetHostIp(TextBoxHost.Text);
-            freeLanService.SetClientId(TextBoxId.Text);
-            freeLanService.SetRelayMode(CheckBoxClientRelay.IsChecked.Value);
-            freeLanService.SetShowShell(CheckBoxDebug.IsChecked.Value);
-            bool started = freeLanService.StartFreeLan();
-            if (started)
+            try
             {
-                SetStateValueLabel("Client - running.");
-                StartProcessCheck();
+                freeLanService.SetMode(FreeLanMode.HOST);
+                freeLanService.SetPassphrase(TextBoxHostPassword.Text);
+                freeLanService.SetRelayMode(CheckBoxHostRelay.IsChecked.Value);
+                freeLanService.SetShowShell(CheckBoxDebug.IsChecked.Value);
+                freeLanService.GetFreeLanServiceStatus();
+
+                OnCommonStart();
+
+                bool started = freeLanService.StartFreeLan();
+                if (started)
+                {
+                    SetStateValueLabel("Host - running.");
+                    SetFreeLANAddressValueLabel(freeLanService.GetFreeLanAddress());
+                    StartProcessCheck();
+                }
             }
+            catch (InvalidInput ex)
+            {
+                ExceptionHelper.ShowMessageBox(ex);
+            }
+
+
+        }
+        private void OnClientStartClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                freeLanService.SetMode(FreeLanMode.CLIENT);
+                freeLanService.SetPassphrase(TextBoxClientPassword.Text);
+                freeLanService.SetHostIp(TextBoxClientHost.Text);
+                freeLanService.SetClientId(TextBoxId.Text);
+                freeLanService.SetRelayMode(CheckBoxClientRelay.IsChecked.Value);
+                freeLanService.SetShowShell(CheckBoxDebug.IsChecked.Value);
+
+                OnCommonStart();
+
+                bool started = freeLanService.StartFreeLan();
+                if (started)
+                {
+                    SetStateValueLabel("Client - running.");
+                    SetFreeLANAddressValueLabel(freeLanService.GetFreeLanAddress());
+                    StartProcessCheck();
+                }
+            }
+            catch (InvalidInput ex)
+            {
+                ExceptionHelper.ShowMessageBox(ex);
+            }
+
+
 
         }
 
-        private void OnFreeLanStop(object sender, RoutedEventArgs e)
+        private void OnFreeLanStopClick(object sender, RoutedEventArgs e)
         {
             OnFreeLanStop();
-        }   
+        }
+
+        #endregion
         private void OnFreeLanStop()
         {
             SetStateValueLabel("Not running.");
+            SetFreeLANAddressValueLabel("None");
             freeLanService.StopFreeLan();
             foreach (WindowsService w in windowsServices.GetServicesToDisable())
             {
@@ -202,20 +294,6 @@ namespace P2PLauncher.View
             }
         }
 
-        public void UpdateWindow()
-        {
-            UpdateFreeLanStatus();
-            UpdateNumbers();
-            SetDonatorsLabel(donators);
 
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if(freeLanService.process != null && !freeLanService.process.HasExited)
-            {
-                OnFreeLanStop();
-            }
-        }
     }
 }

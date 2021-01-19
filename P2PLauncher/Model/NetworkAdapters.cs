@@ -71,7 +71,7 @@ namespace P2PLauncher.Model
         {
             List<string> _temp = new List<string>();
             string saved = Properties.Settings.Default.AdaptersToDisable;
-            if(saved == null)
+            if(saved == null || saved.Length == 0)
             {
                 return new string[0];
             }

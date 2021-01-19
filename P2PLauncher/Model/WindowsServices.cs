@@ -22,6 +22,16 @@ namespace P2PLauncher.Model
             return windowsServices;
         }
 
+        public WindowsService GetServiceByName(string serviceName)
+        {
+            ServiceController controller = ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals(serviceName));
+            if(controller == null)
+            {
+                return null;
+            }
+            return new WindowsService().FromServiceController(controller);
+        }
+
         public List<WindowsService> GetServicesWithType(ServiceType serviceType)
         {
             List<WindowsService> withType = new List<WindowsService>();
@@ -70,7 +80,7 @@ namespace P2PLauncher.Model
         public string[] GetServiceNamesToDisable()
         {
             string saved = Properties.Settings.Default.ServicesToDisable;
-            if(saved == null)
+            if(saved == null || saved.Length == 0)
             {
                 return new string[0];
             }
