@@ -187,6 +187,10 @@ namespace P2PLauncher.View
             window.ShowDialog();
             UpdateWindow();
         }
+        private void OnCopyPublicAddressClick(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(LabelPublicAddress.Content.ToString());
+        }
 
         #endregion
 
@@ -216,6 +220,7 @@ namespace P2PLauncher.View
                 freeLanService.SetMode(FreeLanMode.CLIENT_HUB);
                 freeLanService.SetPassphrase(TextBoxHubPassword.Text);
                 freeLanService.SetHostIp(TextBoxHubHost.Text);
+                freeLanService.SetShowShell(CheckBoxDebug.IsChecked.Value);
 
                 OnCommonStart();
 

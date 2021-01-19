@@ -30,6 +30,7 @@
                 <!-- Public address-->
                 <Label Content="Public address to use:" HorizontalAlignment="Left" Margin="0,77,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="LabelPublicAddress" Content="0.0.0.0" HorizontalAlignment="Left" Margin="125,77,0,0" VerticalAlignment="Top" Width="85"/>
+                <Button x:Name="ButtonCopyPublicAddress" Click="OnCopyPublicAddressClick" Content="Copy" HorizontalAlignment="Left" Margin="284,80,0,0" VerticalAlignment="Top" Width="75"/>
 
                 <!-- FreeLan address-->
                 <Label Content="Your FreeLAN address to use:" HorizontalAlignment="Left" Margin="0,103,0,0" VerticalAlignment="Top"/>
