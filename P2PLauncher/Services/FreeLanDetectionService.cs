@@ -12,7 +12,7 @@ namespace P2PLauncher.Services
     {
         private readonly string FreeLanExecutableLocation = "bin\\freelan.exe";
         private readonly string ProgramRootDir = "FreeLAN";
-        private readonly string DownloadUrl = "https://www.freelan.org/download.html#windows";
+        private readonly string DownloadUrl = "https://github.com/freelan-developers/freelan/releases";
         private readonly IFileService _fileService;
         private readonly IDialogService dialogService;
 
