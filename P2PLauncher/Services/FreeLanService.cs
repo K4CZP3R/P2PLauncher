@@ -20,7 +20,7 @@ namespace P2PLauncher.Services
         private readonly WindowsServices windowsServices;
 
         public Process process;
-        
+
         private string passphrase;
         private string hostIp;
         private AddressType hostIpType;
@@ -29,7 +29,7 @@ namespace P2PLauncher.Services
         private string relayMode;
         private bool showShell;
         private StreamWriter debugWrite;
-        
+
         public void SetPassphrase(string content)
         {
             passphrase = content;
@@ -41,9 +41,6 @@ namespace P2PLauncher.Services
             {
                 case AddressType.UNKNOWN:
                     throw new InvalidInput("Invalid host/hub address!");
-                case AddressType.IPV6:
-                    hostIp = $"[{content}]";
-                    break;
                 case AddressType.IPV4:
                     hostIp = content;
                     break;
@@ -76,7 +73,7 @@ namespace P2PLauncher.Services
         {
             showShell = c;
         }
-        
+
 
 
         public FreeLanService(WindowsServices windowsServices,
@@ -95,7 +92,7 @@ namespace P2PLauncher.Services
             if (freeLanService == null)
                 return false;
             return freeLanService.Status == ServiceControllerStatus.Running;
-            
+
         }
         public void SetFreeLanServiceStatus(bool start)
         {
@@ -110,37 +107,51 @@ namespace P2PLauncher.Services
         }
         public void StopFreeLan()
         {
-            if(!process.HasExited)
+            if (!process.HasExited)
                 process.Kill();
             debugWrite.Close();
-            
         }
 
-        public string GetFreeLanAddress()
+        public bool GetStrangeFreeLansRunning()
         {
-            switch(mode)
+            foreach (var process in Process.GetProcessesByName("freelan"))
             {
-                case FreeLanMode.HOST:
-                    return "9.0.0.1";
-                case FreeLanMode.CLIENT:
-                    return $"9.0.0.{clientId}";
-                default:
-                    return "Work in progress.";
+                return true;
             }
+            return false;
         }
 
+        public bool KillStrangeFreeLan()
+        {
+            bool killed = false;
+            foreach (var process in Process.GetProcessesByName("freelan"))
+            {
+                killed = true;
+                process.Kill();
+            }
+            return killed;
+        }
 
         public bool StartFreeLan()
         {
-            if(freeLanDetectionService.GetInstallationStatus() != FreeLanInstallationStatus.OK)
+            if(process != null && !process.HasExited)
+            {
+                throw new AlreadyRunning("Please stop it first.");
+            }
+            if (freeLanDetectionService.GetInstallationStatus() != FreeLanInstallationStatus.OK)
             {
                 dialogService.ShowMessage("FreeLan is not confiured! do it", "JUST DO IT!");
                 return false;
             }
 
-            if(GetFreeLanServiceStatus())
+            if (GetFreeLanServiceStatus())
             {
                 SetFreeLanServiceStatus(false);
+            }
+
+            if(GetStrangeFreeLansRunning())
+            {
+                KillStrangeFreeLan();
             }
 
 
@@ -156,7 +167,7 @@ namespace P2PLauncher.Services
             process = new Process();
             process.StartInfo.FileName = freeLanDetectionService.GetFreeLanExecutableLocation();
 
-            switch(mode)
+            switch (mode)
             {
                 case FreeLanMode.CLIENT:
                     process.StartInfo.Arguments =
@@ -171,11 +182,11 @@ namespace P2PLauncher.Services
                         $"--security.passphrase {passphrase} --fscp.contact {hostIp}:12000 --tap_adapter.dhcp_proxy_enabled no --tap_adapter.ipv4_dhcp true --tap_adapter.metric 1 --debug";
                     break;
             };
-            
+
             process.StartInfo.CreateNoWindow = !showShell;
             process.StartInfo.WindowStyle = showShell ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
 
-            if(!showShell)
+            if (!showShell)
             {
                 // Logging to file
                 process.StartInfo.UseShellExecute = false;
@@ -187,11 +198,11 @@ namespace P2PLauncher.Services
                         debugWrite.WriteLine(e.Data);
                     }
                 });
-            } 
-           
+            }
+
 
             process.Start();
-            if(!showShell)
+            if (!showShell)
                 process.BeginOutputReadLine();
             return !process.HasExited;
         }

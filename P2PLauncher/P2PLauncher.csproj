@@ -66,6 +66,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
+    <Compile Include="Exceptions\AlreadyRunning.cs" />
     <Compile Include="Exceptions\InvalidInput.cs" />
     <Compile Include="Model\AddressType.cs" />
     <Compile Include="Model\FreeLanInstallationStatus.cs" />
