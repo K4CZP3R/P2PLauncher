@@ -8,6 +8,6 @@ namespace P2PLauncher.Model
 {
     public enum AddressType
     {
-        IPV4, IPV6, UNKNOWN
+        IPV4, UNKNOWN
     }
 }

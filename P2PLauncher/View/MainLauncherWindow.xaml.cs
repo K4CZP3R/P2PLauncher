@@ -32,6 +32,7 @@ namespace P2PLauncher.View
         private readonly IDialogService dialogService;
         private readonly FreeLanService freeLanService;
         private DispatcherTimer processCheck;
+        private DispatcherTimer freeLanAddressCheck;
         private readonly string donators = "Striderstroke";
 
 
@@ -59,6 +60,7 @@ namespace P2PLauncher.View
             }
 
             UpdateWindow();
+
         }
 
         #region UI setters
@@ -82,6 +84,10 @@ namespace P2PLauncher.View
         {
             LabelFreeLANAddress.Content = content;
         }
+        private void SetVisibilityFreeLANAddressTipLabel(bool visible)
+        {
+            LabelFreeLANAddressTip.Visibility = visible ? Visibility.Visible : Visibility.Hidden;
+        }
         private void SetStateValueLabel(string content)
         {
             LabelStateValue.Content = content;
@@ -104,6 +110,30 @@ namespace P2PLauncher.View
             SetServicesToDisableValueLabel(windowsServices.GetServiceNamesToDisable().Length.ToString());
             SetPublicAddressValueLabel(EnvHelper.GetPublicAddress());
 
+         
+            
+        }
+
+        private bool UpdateFreeLANAddress()
+        {
+            List<string> tapIps = networkAdapters.GetTAPCurrentIP();
+            if (tapIps.Count == 0)
+            {
+                SetFreeLANAddressValueLabel("Unknown.");
+                SetVisibilityFreeLANAddressTipLabel(false);
+                return false;
+            }
+            else if (tapIps.Count > 1)
+            {
+                SetFreeLANAddressValueLabel(String.Join(",", tapIps.ToArray()));
+                SetVisibilityFreeLANAddressTipLabel(true);
+            }
+            else
+            {
+                SetFreeLANAddressValueLabel(tapIps[0]);
+                SetVisibilityFreeLANAddressTipLabel(false);
+            }
+            return true;
         }
 
         public void UpdateWindow()
@@ -128,6 +158,7 @@ namespace P2PLauncher.View
 
         private void OnOpenLogsClick(object sender, RoutedEventArgs e)
         {
+            UpdateWindow();
             if (EnvHelper.FileExists("debug.txt"))
             {
                 EnvHelper.OpenNotepadWithFile("debug.txt");
@@ -174,6 +205,8 @@ namespace P2PLauncher.View
             {
                 a.Disable();
             }
+
+            StartFreeLANAddressCheck();
         }
 
         private void OnHubStartClick(object sender, RoutedEventArgs e)
@@ -190,13 +223,17 @@ namespace P2PLauncher.View
                 if (started)
                 {
                     SetStateValueLabel("Hub - running.");
-                    SetFreeLANAddressValueLabel(freeLanService.GetFreeLanAddress());
                     StartProcessCheck();
                 }
             }
-            catch (InvalidInput ex)
+            catch (Exception ex)
             {
-                ExceptionHelper.ShowMessageBox(ex);
+                if (ex is InvalidInput || ex is AlreadyRunning)
+                {
+                    ExceptionHelper.ShowMessageBox(ex);
+                    return;
+                }
+                throw;
             }
         }
         private void OnHostStartClick(object sender, RoutedEventArgs e)
@@ -215,13 +252,17 @@ namespace P2PLauncher.View
                 if (started)
                 {
                     SetStateValueLabel("Host - running.");
-                    SetFreeLANAddressValueLabel(freeLanService.GetFreeLanAddress());
                     StartProcessCheck();
                 }
             }
-            catch (InvalidInput ex)
+            catch (Exception ex)
             {
-                ExceptionHelper.ShowMessageBox(ex);
+                if (ex is InvalidInput || ex is AlreadyRunning)
+                {
+                    ExceptionHelper.ShowMessageBox(ex);
+                    return;
+                }
+                throw;
             }
 
 
@@ -243,13 +284,17 @@ namespace P2PLauncher.View
                 if (started)
                 {
                     SetStateValueLabel("Client - running.");
-                    SetFreeLANAddressValueLabel(freeLanService.GetFreeLanAddress());
                     StartProcessCheck();
                 }
             }
-            catch (InvalidInput ex)
+            catch (Exception ex)
             {
-                ExceptionHelper.ShowMessageBox(ex);
+                if (ex is InvalidInput || ex is AlreadyRunning)
+                {
+                    ExceptionHelper.ShowMessageBox(ex);
+                    return;
+                }
+                throw;
             }
 
 
@@ -280,12 +325,29 @@ namespace P2PLauncher.View
         private void StartProcessCheck()
         {
             processCheck = new DispatcherTimer();
-            processCheck.Tick += ProcessCheck_Tick;
+            processCheck.Tick += OnProcessCheck;
             processCheck.Interval = TimeSpan.FromSeconds(1.00);
             processCheck.Start();
         }
 
-        private void ProcessCheck_Tick(object sender, EventArgs e)
+        private void StartFreeLANAddressCheck()
+        {
+            freeLanAddressCheck = new DispatcherTimer();
+            freeLanAddressCheck.Tick += OnFreeLanAddressCheck;
+            freeLanAddressCheck.Interval = TimeSpan.FromSeconds(3.00);
+            freeLanAddressCheck.Start();
+        }
+
+        private void OnFreeLanAddressCheck(object sender, EventArgs e)
+        {
+            if(UpdateFreeLANAddress())
+            {
+                freeLanAddressCheck.Stop();
+            }
+
+        }
+
+        private void OnProcessCheck(object sender, EventArgs e)
         {
             if (freeLanService.process.HasExited)
             {

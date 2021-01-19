@@ -11,8 +11,6 @@ namespace P2PLauncher.Utils
     {
         public static AddressType GetAddressType(string input)
         {
-            if (input.Contains(":"))
-                return AddressType.IPV6;
             if (input.Contains("."))
                 return AddressType.IPV4;
             return AddressType.UNKNOWN;

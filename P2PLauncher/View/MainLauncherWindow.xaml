@@ -34,6 +34,7 @@
                 <!-- FreeLan address-->
                 <Label Content="Your FreeLAN address to use:" HorizontalAlignment="Left" Margin="0,103,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="LabelFreeLANAddress" Content="None" HorizontalAlignment="Left" Margin="160,103,0,0" VerticalAlignment="Top" Width="199"/>
+                <Label Visibility="Hidden" x:Name="LabelFreeLANAddressTip" Content="More than 1 TAP adapter found, showing possible IPs." HorizontalAlignment="Left" Margin="0,129,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
 
 
                 <!-- Debug -->
@@ -76,7 +77,7 @@
                     <!-- Host -->
                     <Label Content="Host:" HorizontalAlignment="Left" Margin="14,11,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     <TextBox x:Name="TextBoxClientHost" HorizontalAlignment="Left" Height="23" Margin="60,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
-                    <Label Content="Enter host's public address here. IPv4/IPv6 supported." HorizontalAlignment="Left" Margin="14,37,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" Grid.ColumnSpan="2"/>
+                    <Label Content="Enter host's public address here. IPv4 supported." HorizontalAlignment="Left" Margin="14,37,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" Grid.ColumnSpan="2"/>
 
                     <!-- Id -->
                     <TextBox x:Name="TextBoxId" HorizontalAlignment="Left" Height="23" Margin="60,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
@@ -99,7 +100,7 @@
                     <!-- Hub address/host -->
                     <Label Content="Hub address:" HorizontalAlignment="Left" Margin="14,11,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     <TextBox x:Name="TextBoxHubHost" HorizontalAlignment="Left" Height="23" Margin="98,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-                    <Label Content="Enter hub's public address here. IPv4/IPv6 supported." HorizontalAlignment="Left" Margin="14,37,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" Grid.ColumnSpan="2"/>
+                    <Label Content="Enter hub's public address here. IPv4 supported." HorizontalAlignment="Left" Margin="14,37,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" Grid.ColumnSpan="2"/>
 
                     <!--Password-->
                     <Label Content="Password:" HorizontalAlignment="Left" Margin="14,65,0,0" VerticalAlignment="Top"/>
