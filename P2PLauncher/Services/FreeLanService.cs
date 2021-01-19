@@ -1,4 +1,7 @@
-﻿using System;
+﻿using P2PLauncher.Exceptions;
+using P2PLauncher.Model;
+using P2PLauncher.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,13 +17,15 @@ namespace P2PLauncher.Services
     {
         private readonly FreeLanDetectionService freeLanDetectionService;
         private readonly IDialogService dialogService;
+        private readonly WindowsServices windowsServices;
 
         public Process process;
         
         private string passphrase;
-        private string hostip;
-        private string clientid;
-        private bool hostMode;
+        private string hostIp;
+        private AddressType hostIpType;
+        private string clientId;
+        private FreeLanMode mode;
         private string relayMode;
         private bool showShell;
         private StreamWriter debugWrite;
@@ -31,15 +36,36 @@ namespace P2PLauncher.Services
         }
         public void SetHostIp(string content)
         {
-            hostip = content;
+            hostIpType = AddressHelper.GetAddressType(content);
+            switch (hostIpType)
+            {
+                case AddressType.UNKNOWN:
+                    throw new InvalidInput("Invalid host/hub address!");
+                case AddressType.IPV6:
+                    hostIp = $"[{content}]";
+                    break;
+                case AddressType.IPV4:
+                    hostIp = content;
+                    break;
+            }
         }
         public void SetClientId(string content)
         {
-            clientid = content;
+            if (!int.TryParse(content, out int parsed))
+            {
+                throw new InvalidInput("ID should be an number.");
+            }
+
+            if (parsed < 2 || parsed > 253)
+            {
+                throw new InvalidInput("ID should be in range between 2-253.");
+            }
+
+            clientId = content;
         }
-        public void SetHostMode(bool c)
+        public void SetMode(FreeLanMode c)
         {
-            hostMode = c;
+            mode = c;
         }
 
         public void SetRelayMode(bool c)
@@ -53,44 +79,34 @@ namespace P2PLauncher.Services
         
 
 
-        public FreeLanService(FreeLanDetectionService freeLanDetectionService, IDialogService dialogService)
+        public FreeLanService(WindowsServices windowsServices,
+            FreeLanDetectionService freeLanDetectionService,
+            IDialogService dialogService)
         {
             this.freeLanDetectionService = freeLanDetectionService;
             this.dialogService = dialogService;
+            this.windowsServices = windowsServices;
         }
 
 
         public bool GetFreeLanServiceStatus()
         {
-            ServiceController sc = new ServiceController("FreeLAN Service");
-            switch(sc.Status)
-            {
-                case ServiceControllerStatus.Running:
-                    return true;
-                default:
-                    return false;
-            }
+            WindowsService freeLanService = windowsServices.GetServiceByName("FreeLAN Service");
+            if (freeLanService == null)
+                return false;
+            return freeLanService.Status == ServiceControllerStatus.Running;
+            
         }
         public void SetFreeLanServiceStatus(bool start)
         {
-            
-            ServiceController sc = new ServiceController("FreeLAN Service");
-            if(start)
-            {
-                try
-                {
-                    sc.Start();
-                }
-                catch(InvalidOperationException ex)
-                {
-                    return;
-                }
-            }
+            WindowsService freeLanService = windowsServices.GetServiceByName("FreeLAN Service");
+            if (freeLanService == null)
+                return;
+            if (start)
+                freeLanService.Enable();
             else
-            {
-                sc.Stop();
-            }
-            
+                freeLanService.Disable();
+
         }
         public void StopFreeLan()
         {
@@ -99,9 +115,24 @@ namespace P2PLauncher.Services
             debugWrite.Close();
             
         }
+
+        public string GetFreeLanAddress()
+        {
+            switch(mode)
+            {
+                case FreeLanMode.HOST:
+                    return "9.0.0.1";
+                case FreeLanMode.CLIENT:
+                    return $"9.0.0.{clientId}";
+                default:
+                    return "Work in progress.";
+            }
+        }
+
+
         public bool StartFreeLan()
         {
-            if(freeLanDetectionService.GetInstallationStatus() != Model.FreeLanInstallationStatus.OK)
+            if(freeLanDetectionService.GetInstallationStatus() != FreeLanInstallationStatus.OK)
             {
                 dialogService.ShowMessage("FreeLan is not confiured! do it", "JUST DO IT!");
                 return false;
@@ -118,18 +149,29 @@ namespace P2PLauncher.Services
             /*
              * //"freelan.exe" --security.passphrase %quoted% --tap_adapter.ipv4_address_prefix_length 9.0.0.1/24 --switch.relay_mode_enabled yes --tap_adapter.metric 1 --debug
              * //"freelan.exe" --security.passphrase %quoted% --fscp.contact %hostip%:12000 --tap_adapter.ipv4_address_prefix_length 9.0.0.%clientid%/24 --tap_adapter.metric 1 --debug
+             * freelan.exe --security.passphrase "[INSERT_HERE]" --fscp.contact [HOSTS_IP]:12000 --tap_adapter.dhcp_proxy_enabled no --tap_adapter.ipv4_dhcp true --tap_adapter.metric 1 --debug
+             * freelan.exe" --security.passphrase "[INSERT_HERE]" --fscp.contact [[IPV6_IP]]:12000 --tap_adapter.ipv4_address_prefix_length 9.0.0.[CLIENTID]/24 --tap_adapter.metric 1 --debug
              */
 
             process = new Process();
             process.StartInfo.FileName = freeLanDetectionService.GetFreeLanExecutableLocation();
-            if(hostMode)
+
+            switch(mode)
             {
-                process.StartInfo.Arguments = $"--security.passphrase {passphrase} --tap_adapter.ipv4_address_prefix_length 9.0.0.1/24 --switch.relay_mode_enabled {relayMode} --tap_adapter.metric 1 --debug";
-            }
-            else
-            {
-                process.StartInfo.Arguments = $"--security.passphrase {passphrase} --fscp.contact {hostip}:12000 --switch.relay_mode_enabled {relayMode} --tap_adapter.ipv4_address_prefix_length 9.0.0.{clientid}/24 --tap_adapter.metric 1 --debug";
-            }
+                case FreeLanMode.CLIENT:
+                    process.StartInfo.Arguments =
+                        $"--security.passphrase {passphrase} --fscp.contact {hostIp}:12000 --switch.relay_mode_enabled {relayMode} --tap_adapter.ipv4_address_prefix_length 9.0.0.{clientId}/24 --tap_adapter.metric 1 --debug";
+                    break;
+                case FreeLanMode.HOST:
+                    process.StartInfo.Arguments =
+                        $"--security.passphrase {passphrase} --tap_adapter.ipv4_address_prefix_length 9.0.01/24 --switch.relay_mode_enabled {relayMode} --tap_adapter.metric 1 --debug";
+                    break;
+                case FreeLanMode.CLIENT_HUB:
+                    process.StartInfo.Arguments =
+                        $"--security.passphrase {passphrase} --fscp.contact {hostIp}:12000 --tap_adapter.dhcp_proxy_enabled no --tap_adapter.ipv4_dhcp true --tap_adapter.metric 1 --debug";
+                    break;
+            };
+            
             process.StartInfo.CreateNoWindow = !showShell;
             process.StartInfo.WindowStyle = showShell ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
 
