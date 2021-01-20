@@ -23,26 +23,48 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYYMMDD-HH
-          utcOffset: "+01:00"
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-#       - name: Build it (Release)
-#         run: msbuild /t:Build /p:Configuration=Release /p:DebugSymbols=false /p:DebugType=None
+      - name: Build it (Release)
+        run: msbuild /t:Build /p:Configuration=Release /p:DebugSymbols=false /p:DebugType=None
       - name: Build it (Debug)
         run: msbuild /t:Build /p:Configuration=Debug
-      - uses: actions/upload-artifact@v2
+      - uses: papeloto/action-zip@v1
         with:
-          name: P2P-Debug-"${{ steps.current-time.outputs.formattedTime }}"
-          path: P2PLauncher/bin/Debug/
-      - uses: "marvinpinto/action-automatic-releases@latest"
+          files: P2PLauncher/bin/Debug/
+          dest: debug.zip
+      - uses: papeloto/action-zip@v1
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
+          files: P2PLauncher/bin/Release/
+          dest: release.zip
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           draft: true
-          files: |
-            P2PLauncher/bin/Debug/P2PLauncher.exe
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset-debug
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./debug.zip
+          asset_name: debug-art.zip
+          asset_content_type: application/zip
+      - name: Upload Release Asset
+        id: upload-release-asset-release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./release.zip
+          asset_name: release-art.zip
+          asset_content_type: application/zip
+     
