@@ -74,6 +74,22 @@ namespace P2PLauncher.Services
             showShell = c;
         }
 
+        public bool IsThisValidIPForTheCurrentMode(string ip)
+        {
+            switch (mode)
+            {
+                case FreeLanMode.CLIENT:
+                    return ip.StartsWith("9.0.0") && !ip.Equals("9.0.0.1");
+                case FreeLanMode.CLIENT_HUB:
+                    return ip.StartsWith("9.0.0") && !ip.Equals("9.0.0.1");
+                case FreeLanMode.HOST:
+                    return ip.StartsWith("9.0.0");
+                default:
+                    return false;
+    
+            }
+        }
+
 
 
         public FreeLanService(WindowsServices windowsServices,

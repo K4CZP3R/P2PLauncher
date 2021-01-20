@@ -117,6 +117,13 @@ namespace P2PLauncher.View
         private bool UpdateFreeLANAddress()
         {
             List<string> tapIps = networkAdapters.GetTAPCurrentIP();
+            for(int i = tapIps.Count - 1; i>=0; i--)
+            {
+                if(!freeLanService.IsThisValidIPForTheCurrentMode(tapIps[i]))
+                {
+                    tapIps.RemoveAt(i);
+                }
+            }
             if (tapIps.Count == 0)
             {
                 SetFreeLANAddressValueLabel("Unknown.");
