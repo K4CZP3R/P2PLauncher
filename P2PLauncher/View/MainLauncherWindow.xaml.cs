@@ -110,8 +110,8 @@ namespace P2PLauncher.View
             SetServicesToDisableValueLabel(windowsServices.GetServiceNamesToDisable().Length.ToString());
             SetPublicAddressValueLabel(EnvHelper.GetPublicAddress());
 
-         
-            
+
+
         }
 
         private bool UpdateFreeLANAddress()
@@ -317,6 +317,7 @@ namespace P2PLauncher.View
             SetStateValueLabel("Not running.");
             SetFreeLANAddressValueLabel("None");
             freeLanService.StopFreeLan();
+            freeLanAddressCheck.Stop();
             foreach (WindowsService w in windowsServices.GetServicesToDisable())
             {
                 w.Enable();
@@ -345,10 +346,7 @@ namespace P2PLauncher.View
 
         private void OnFreeLanAddressCheck(object sender, EventArgs e)
         {
-            if(UpdateFreeLANAddress())
-            {
-                freeLanAddressCheck.Stop();
-            }
+            UpdateFreeLANAddress();
 
         }
 
