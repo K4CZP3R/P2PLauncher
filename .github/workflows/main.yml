@@ -6,7 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master, dev]
+    tags:
+      - '*'
+    branches: [ master, dev ]
   pull_request:
     branches: [ master, dev ]
 
@@ -21,11 +23,26 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDD-HH
+          utcOffset: "+01:00"
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-      - name: Build it
-        run: msbuild
+#       - name: Build it (Release)
+#         run: msbuild /t:Build /p:Configuration=Release /p:DebugSymbols=false /p:DebugType=None
+      - name: Build it (Debug)
+        run: msbuild /t:Build /p:Configuration=Debug
       - uses: actions/upload-artifact@v2
         with:
-          name: DebugArtifact
+          name: P2P-Debug-"${{ steps.current-time.outputs.formattedTime }}"
           path: P2PLauncher/bin/Debug/
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          draft: true
+          files: |
+            P2PLauncher/bin/Debug/P2PLauncher.exe
