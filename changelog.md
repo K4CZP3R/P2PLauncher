@@ -1,1 +1,2 @@
-# This is a test release using Github Actions
+# This is a test release
+> Created using Github Actions
