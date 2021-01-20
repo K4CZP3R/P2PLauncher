@@ -25,3 +25,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
       - name: Build it
         run: msbuild
+      - uses: actions/upload-artifact@v2
+        with:
+          name: DebugArtifact
+          path: P2PLauncher/bin/Debug/
