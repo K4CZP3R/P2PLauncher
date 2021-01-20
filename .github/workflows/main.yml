@@ -24,12 +24,6 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
       - name: Build it (Release)
         run: msbuild /t:Build /p:Configuration=Release /p:DebugSymbols=false /p:DebugType=None
-      - name: Build it (Debug)
-        run: msbuild /t:Build /p:Configuration=Debug
-      - uses: papeloto/action-zip@v1
-        with:
-          files: P2PLauncher/bin/Debug/
-          dest: debug.zip
       - uses: papeloto/action-zip@v1
         with:
           files: P2PLauncher/bin/Release/
@@ -42,18 +36,9 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
+          body_path: changelog.md
           draft: true
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset-debug
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./debug.zip
-          asset_name: debug-art.zip
-          asset_content_type: application/zip
       - name: Upload Release Asset
         id: upload-release-asset-release
         uses: actions/upload-release-asset@v1
