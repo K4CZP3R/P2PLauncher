@@ -1,2 +1,2 @@
-# This is a test release
-> Created using Github Actions
+Changes
+* Fixed message box content (FreeLAN not detected)
