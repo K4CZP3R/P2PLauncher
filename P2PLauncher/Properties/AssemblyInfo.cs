@@ -8,9 +8,9 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("P2PLauncher")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("FreeLan based P2P connection manager")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("K4CZP3R, Ndo360")]
 [assembly: AssemblyProduct("P2PLauncher")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]

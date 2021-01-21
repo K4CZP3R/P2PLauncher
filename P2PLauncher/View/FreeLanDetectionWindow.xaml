@@ -1,0 +1,35 @@
+﻿<Window x:Class="P2PLauncher.View.FreeLanDetectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2PLauncher.View"
+        mc:Ignorable="d"
+        Title="FreeLanDetectionWindow" Height="279.779" Width="477.666"
+        >
+    <Grid>
+        <Label x:Name="LabelStatus" Content="Status:"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
+        
+        <Button x:Name="ButtonFindFreeLan" Click="OnFindFreeLanButton"  Content="Find FreeLan" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="75"/>
+        <TabControl x:Name="TabControlFreeLanLocation" HorizontalAlignment="Left" Height="100" Margin="10,119,0,0" VerticalAlignment="Top" Width="361">
+            <TabItem Header="Locate it">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="88*"/>
+                        <ColumnDefinition Width="267*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="LabelSelectFreeLanPathHint" Content="Select freelan.exe" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0" Grid.ColumnSpan="2"/>
+                    <Button x:Name="ButtonSelectFreeLanPath" Click="OnSelectFreeLanPathButton" Content="Select..." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Download">
+                <Grid Background="#FFE5E5E5">
+                    <Label x:Name="LabelDownloadFreeLanHint" Content="Here goes the download suggestion." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0"/>
+                    <Button x:Name="ButtonDownloadFreeLan" Content="Download" Click="OnDownloadFreeLanButton" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+
+    </Grid>
+</Window>
