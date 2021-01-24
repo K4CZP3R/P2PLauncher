@@ -3,3 +3,7 @@
 
 # How does it work?
 > A guide will be posted here soon, along side a video, on how to use the program. Stay tuned.
+
+# Credits
+> Project Lead: Noah C. "Ndo360" Cline
+> Lead Programmer: K4CZP3R
