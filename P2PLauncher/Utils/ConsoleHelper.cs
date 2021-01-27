@@ -14,6 +14,14 @@ namespace P2PLauncher.Utils
     public static class ConsoleHelper
     {
         private const string Kernel32_DllName = "kernel32.dll";
+        private const int MF_BYCOMMAND = 0x00000000;
+        public const int SC_CLOSE = 0xF060;
+
+        [DllImport("user32.dll")]
+        public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
         [DllImport(Kernel32_DllName)]
         private static extern bool AllocConsole();
@@ -42,6 +50,8 @@ namespace P2PLauncher.Utils
             {
                 AllocConsole();
                 InvalidateOutAndError();
+                DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
+
             }
             //#endif
         }
