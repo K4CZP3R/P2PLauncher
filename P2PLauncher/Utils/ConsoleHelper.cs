@@ -45,7 +45,6 @@ namespace P2PLauncher.Utils
         /// </summary>
         public static void Show()
         {
-            //#if DEBUG
             if (!HasConsole)
             {
                 AllocConsole();
@@ -53,7 +52,6 @@ namespace P2PLauncher.Utils
                 DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
 
             }
-            //#endif
         }
 
         /// <summary>
@@ -61,13 +59,11 @@ namespace P2PLauncher.Utils
         /// </summary>
         public static void Hide()
         {
-            //#if DEBUG
             if (HasConsole)
             {
                 SetOutAndErrorNull();
                 FreeConsole();
             }
-            //#endif
         }
 
         public static void Toggle()

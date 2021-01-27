@@ -41,7 +41,7 @@
                 <!-- Debug -->
                 <CheckBox x:Name="CheckBoxDebug" Content="Debug screen" HorizontalAlignment="Left" Margin="266,254,0,0" VerticalAlignment="Top"/>
                 <Button x:Name="ButtonOpenLogs" Click="OnOpenLogsClick" Content="Open logs" HorizontalAlignment="Left" Margin="284,229,0,0" VerticalAlignment="Top" Width="75"/>
-                <Button x:Name="ButtonOpenConsole" Click="OnOpenConsoleClick" Content="Open console" HorizontalAlignment="Left" Margin="272,204,0,0" VerticalAlignment="Top" Width="87"/>
+                <Button x:Name="ButtonOpenConsole" Click="OnOpenConsoleClick" Content="Toggle console" HorizontalAlignment="Left" Margin="272,204,0,0" VerticalAlignment="Top" Width="87"/>
 
                 <!-- State -->
                 <Label Content="State:" HorizontalAlignment="Left" Margin="0,248,0,0" VerticalAlignment="Top"/>

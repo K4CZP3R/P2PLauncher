@@ -187,7 +187,7 @@ namespace P2PLauncher.View
             
         private void OnOpenConsoleClick(object sender, RoutedEventArgs e)
         {
-            ConsoleHelper.Show();
+            ConsoleHelper.Toggle();
         }
         private void OnOpenLogsClick(object sender, RoutedEventArgs e)
         {
