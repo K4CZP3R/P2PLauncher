@@ -99,7 +99,7 @@
 
                     <!-- Relay -->
                     <CheckBox x:Name="CheckBoxClientRelay" IsChecked="True" Content="Relay mode" HorizontalAlignment="Left" Margin="14,170,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-                    <Label Content="Relay Mode: Disabled for clients by default (Advanced)" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+                    <Label Content="Relay Mode: Enabled for clients by default (Advanced)" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
 
                 </Grid>
             </TabItem>
