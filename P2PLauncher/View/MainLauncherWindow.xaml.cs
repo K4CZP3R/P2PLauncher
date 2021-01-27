@@ -242,7 +242,7 @@ namespace P2PLauncher.View
             {
                 a.Disable();
             }
-
+            
             StartFreeLANAddressCheck();
         }
 
@@ -376,6 +376,7 @@ namespace P2PLauncher.View
             freeLanAddressCheck = new DispatcherTimer();
             freeLanAddressCheck.Tick += OnFreeLanAddressCheck;
             freeLanAddressCheck.Interval = TimeSpan.FromSeconds(freeLanAddressCheckInterval);
+            freeLanAddressCheckLoops = 0;
             freeLanAddressCheck.Start();
         }
 
@@ -414,6 +415,7 @@ namespace P2PLauncher.View
             int timeLeft = freeLanAddressCheckRenewTimeout - (int)(freeLanAddressCheckInterval * freeLanAddressCheckLoops);
             ConsoleHelper.Print($"{timeLeft}s for the timeout.");
             freeLanAddressCheckLoops += 1;
+
         }
 
         private void OnProcessCheck(object sender, EventArgs e)
