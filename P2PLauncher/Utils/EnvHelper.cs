@@ -64,10 +64,12 @@ namespace P2PLauncher.Utils
         {
             try
             {
-               return  new WebClient().DownloadString("https://ipv4.icanhazip.com/");
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                return  new WebClient().DownloadString("https://ipv4.icanhazip.com/");
             }
             catch(Exception ex)
             {
+
                 ExceptionHelper.ShowMessageBox(ex);
                 return "127.0.0.1";
             }

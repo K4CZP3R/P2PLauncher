@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Management;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace P2PLauncher.Model
         public bool Enabled { get; set; }
         public string ProductName { get; set; }
         public string ServiceName { get; set; }
+        public IPInterfaceProperties IPInterfaceProperties { get; set; }
 
 
 
@@ -36,7 +38,39 @@ namespace P2PLauncher.Model
             //this.Enabled = (bool)managementBaseObject["NetEnabled"];
             this.ProductName = (string)managementBaseObject["ProductName"];
             this.ServiceName = (string)managementBaseObject["ServiceName"];
+            this.IPInterfaceProperties = null;
             return this;
+        }
+
+        public NetworkAdapter FromInterface(NetworkInterface networkInterface)
+        {
+            this.ConnectionId = networkInterface.Name;
+            this.Description = networkInterface.Description;
+            this.ID = null;
+            this.Manufacturer = null;
+            this.Name = null;
+            this.ProductName = null;
+            this.ServiceName = null;
+            this.IPInterfaceProperties = networkInterface.GetIPProperties();
+
+            return this;
+
+        }
+
+        public List<string> GetCurrentIP()
+        {
+            List<string> currentAddresses = new List<string>();
+            if (IPInterfaceProperties == null)
+                return currentAddresses;
+
+            foreach (UnicastIPAddressInformation ip in IPInterfaceProperties.UnicastAddresses)
+            {
+                if(ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    currentAddresses.Add(ip.Address.ToString());
+                }
+            }
+            return currentAddresses;
         }
 
         /// <summary>
@@ -58,6 +92,28 @@ namespace P2PLauncher.Model
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.Start();
         }
+
+        public void SetDefaultMode()
+        {
+            ProcessStartInfo psi =
+         new ProcessStartInfo("netsh", "interface ip set address \"" + ConnectionId + "\" static 9.0.0.1 255.255.255.0 9.0.0.1");
+            Process p = new Process();
+            p.StartInfo = psi;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            p.Start();
+        }
+        public void SetDHCPMode()
+        {
+            ProcessStartInfo psi =
+          new ProcessStartInfo("netsh", "interface ip set address \"" + ConnectionId + "\" DHCP");
+            Process p = new Process();
+            p.StartInfo = psi;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            p.Start();
+        }
+
         public void Disable()
         {
             ProcessStartInfo psi =
@@ -68,6 +124,6 @@ namespace P2PLauncher.Model
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.Start();
         }
-        
+
     }
 }

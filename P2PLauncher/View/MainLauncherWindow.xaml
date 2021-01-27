@@ -41,10 +41,13 @@
                 <!-- Debug -->
                 <CheckBox x:Name="CheckBoxDebug" Content="Debug screen" HorizontalAlignment="Left" Margin="266,254,0,0" VerticalAlignment="Top"/>
                 <Button x:Name="ButtonOpenLogs" Click="OnOpenLogsClick" Content="Open logs" HorizontalAlignment="Left" Margin="284,229,0,0" VerticalAlignment="Top" Width="75"/>
+                <Button x:Name="ButtonOpenConsole" Click="OnOpenConsoleClick" Content="Open console" HorizontalAlignment="Left" Margin="272,204,0,0" VerticalAlignment="Top" Width="87"/>
 
                 <!-- State -->
                 <Label Content="State:" HorizontalAlignment="Left" Margin="0,248,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="LabelStateValue" Content="Not running" HorizontalAlignment="Left" Margin="40,248,0,0" VerticalAlignment="Top"/>
+
+
             </Grid>
         </GroupBox>
         <TabControl HorizontalAlignment="Left" Height="297" Margin="10,10,0,0" VerticalAlignment="Top" Width="390">
@@ -96,7 +99,7 @@
 
                     <!-- Relay -->
                     <CheckBox x:Name="CheckBoxClientRelay" IsChecked="True" Content="Relay mode" HorizontalAlignment="Left" Margin="14,170,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-                    <Label Content="Relay Mode: Disabled for clients by default (Advanced)" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+                    <Label Content="Relay Mode: Enabled for clients by default (Advanced)" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
 
                 </Grid>
             </TabItem>
@@ -108,16 +111,22 @@
                     <Label Content="Enter hub's public address here. IPv4 supported." HorizontalAlignment="Left" Margin="14,37,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" Grid.ColumnSpan="2"/>
 
                     <!--Password-->
-                    <Label Content="Password:" HorizontalAlignment="Left" Margin="14,65,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="TextBoxHubPassword" HorizontalAlignment="Left" Height="23" Margin="81,68,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-                    <Label Content="Enter hub's password here." HorizontalAlignment="Left" Margin="14,91,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="14,60,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TextBoxHubPassword" HorizontalAlignment="Left" Height="23" Margin="81,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="Enter hub's password here." HorizontalAlignment="Left" Margin="14,86,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+
+                    <!-- Timeout for Unknown address -->
+                    <Label Content="Unknown address timeout (seconds):" HorizontalAlignment="Left" Margin="14,109,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TextBoxUATimeout" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Height="23" Margin="220,112,0,0" TextWrapping="Wrap" Text="60" VerticalAlignment="Top" Width="47"/>
+                    <Label Content="This is the amount of time, in seconds, the program will wait before retrying its&#10;attempt to get a valid FreeLAN address." HorizontalAlignment="Left" Margin="14,135,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+
 
                     <!-- Buttons Start/Stop -->
                     <Button Content="Start" Click="OnHubStartClick" HorizontalAlignment="Left" Margin="220,239,0,0" VerticalAlignment="Top" Width="74"/>
                     <Button Content="Stop" Click="OnFreeLanStopClick"  HorizontalAlignment="Left" Margin="299,239,0,0" VerticalAlignment="Top" Width="75"/>
 
                     <!-- Tips -->
-                    <Label Content="What are HUBs?&#10;Hubs are networks ran by a communities that allow clients to join and connect with others without needing to rely on UPnP or Port Forwarding.&#10;Don't be alarmed if your internet cuts out for a moment when joining a HUB!&#10;This is normal as it takes a few moments to receive an IP address from their&#10;DHCP server." HorizontalAlignment="Left" Margin="11,127,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
+                    <Label Content="What are HUBs?&#10;Hubs are networks ran by a communities that allow clients to join and connect with&#10;others without needing to rely on UPnP or Port Forwarding. Ping may be higher,&#10;or lower, depending on your location as all traffic is routed through the HUB. " HorizontalAlignment="Left" Margin="10,172,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
 
                 </Grid>
             </TabItem>

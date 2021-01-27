@@ -18,25 +18,22 @@ namespace P2PLauncher.Model
             "Bluetooth"
         };
 
-
-        public List<string> GetTAPCurrentIP()
+        public List<NetworkAdapter> GetTAPAdapters()
         {
-            List<string> possibleAddresses = new List<string>();
+            List<NetworkAdapter> networkInterfaces = new List<NetworkAdapter>();
             foreach(NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
             {
                 if(ni.Description.Contains("TAP-Windows Adapter V9"))
                 {
-                    foreach(UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
-                    {
-                        if(ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                        {
-                            possibleAddresses.Add(ip.Address.ToString());
-                        }
-                    }
+
+                    networkInterfaces.Add(new NetworkAdapter().FromInterface(ni));
                 }
             }
-            return possibleAddresses;
+            return networkInterfaces;
         }
+
+
+        
         
         /// <summary>
         /// Detects all network adapters installed in the system
