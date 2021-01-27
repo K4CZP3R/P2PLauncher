@@ -1,2 +1,4 @@
-* Prefer IPv4 over IPv6 for public address
-* Enabled Relay Mode for HUB mode and enable it by default for Client mode
+* Reset DHCP if 9.0.0.1 is assigned when in HUB mode.
+* Reset DHCP if there is timeout of getting address.
+* Added console window to log P2P debug information.
+* Changed relay mode for client (text)
