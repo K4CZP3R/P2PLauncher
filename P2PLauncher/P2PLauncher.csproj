@@ -83,6 +83,7 @@
     <Compile Include="Services\WinDialogService.cs" />
     <Compile Include="Services\WinFileService.cs" />
     <Compile Include="Utils\AddressHelper.cs" />
+    <Compile Include="Utils\ConsoleHelper.cs" />
     <Compile Include="Utils\EnumHelper.cs" />
     <Compile Include="Utils\EnvHelper.cs" />
     <Compile Include="Utils\ExceptionHelper.cs" />

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -34,6 +35,9 @@ namespace P2PLauncher.View
         private DispatcherTimer processCheck;
         private DispatcherTimer freeLanAddressCheck;
         private readonly string donators = "Striderstroke";
+        private readonly double freeLanAddressCheckInterval = 3.00;
+        private int freeLanAddressCheckRenewTimeout = 0;
+        private int freeLanAddressCheckLoops = 0;
 
 
         public MainLauncherWindow()
@@ -55,9 +59,11 @@ namespace P2PLauncher.View
 
             if (!EnvHelper.IsAdministrator())
             {
+                ConsoleHelper.Print("User is not administrator, will exit.");
                 MessageBox.Show("To use this application you will need administrator privileges!");
                 System.Environment.Exit(0);
             }
+            ConsoleHelper.Print("User is admin!");
 
             UpdateWindow();
 
@@ -114,16 +120,32 @@ namespace P2PLauncher.View
 
         }
 
-        private bool UpdateFreeLANAddress()
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            List<string> tapIps = networkAdapters.GetTAPCurrentIP();
-            for(int i = tapIps.Count - 1; i>=0; i--)
+            ConsoleHelper.Print($"Validating input: {e.Text}");
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private bool UpdateFreeLANAddress(List<NetworkAdapter> adapters)
+        {
+            List<string> tapIps = new List<string>();
+            foreach (NetworkAdapter adapter in adapters)
             {
-                if(!freeLanService.IsThisValidIPForTheCurrentMode(tapIps[i]))
+                foreach (string ip in adapter.GetCurrentIP())
                 {
-                    tapIps.RemoveAt(i);
+                    if (freeLanService.IsThisValidIPForTheCurrentMode(ip))
+                    {
+                        ConsoleHelper.Print($"'{ip}' is valid ip for FreeLan.");
+                        tapIps.Add(ip);
+                    }
+                    else
+                    {
+                        ConsoleHelper.Print($"'{ip}' is not valid ip for FreeLan.");
+                    }
                 }
             }
+
             if (tapIps.Count == 0)
             {
                 SetFreeLANAddressValueLabel("Unknown.");
@@ -162,7 +184,11 @@ namespace P2PLauncher.View
         #endregion
 
         #region Button actions (all)
-
+            
+        private void OnOpenConsoleClick(object sender, RoutedEventArgs e)
+        {
+            ConsoleHelper.Show();
+        }
         private void OnOpenLogsClick(object sender, RoutedEventArgs e)
         {
             UpdateWindow();
@@ -324,7 +350,8 @@ namespace P2PLauncher.View
             SetStateValueLabel("Not running.");
             SetFreeLANAddressValueLabel("None");
             freeLanService.StopFreeLan();
-            freeLanAddressCheck.Stop();
+            if(freeLanAddressCheck != null)
+                freeLanAddressCheck.Stop();
             foreach (WindowsService w in windowsServices.GetServicesToDisable())
             {
                 w.Enable();
@@ -345,16 +372,48 @@ namespace P2PLauncher.View
 
         private void StartFreeLANAddressCheck()
         {
+            freeLanAddressCheckRenewTimeout = int.Parse(TextBoxUATimeout.Text);
             freeLanAddressCheck = new DispatcherTimer();
             freeLanAddressCheck.Tick += OnFreeLanAddressCheck;
-            freeLanAddressCheck.Interval = TimeSpan.FromSeconds(3.00);
+            freeLanAddressCheck.Interval = TimeSpan.FromSeconds(freeLanAddressCheckInterval);
             freeLanAddressCheck.Start();
         }
 
         private void OnFreeLanAddressCheck(object sender, EventArgs e)
         {
-            UpdateFreeLANAddress();
+            List<NetworkAdapter> adapters = networkAdapters.GetTAPAdapters();
+            UpdateFreeLANAddress(adapters);
 
+
+
+            foreach (NetworkAdapter adapter in adapters)
+            {
+                foreach (string ip in adapter.GetCurrentIP())
+                {
+                    if (ip.StartsWith("169."))
+                    {
+                        if (freeLanAddressCheckInterval * freeLanAddressCheckLoops > freeLanAddressCheckRenewTimeout)
+                        {
+                            ConsoleHelper.Print($"IP starts with 169. and the timeout is reached, resetting DHCP.");
+                            freeLanAddressCheckLoops = 0;
+                            adapter.SetDefaultMode();
+                            adapter.SetDHCPMode();
+                        }
+                    }
+                    if (freeLanService.GetMode() == FreeLanMode.CLIENT_HUB)
+                    {
+                        if (ip == "9.0.0.1")
+                        {
+                            ConsoleHelper.Print($"IP looks like host ip when in hub mode (bug), resetting DHCP.");
+                            adapter.SetDHCPMode();
+                        }
+                    }
+                }
+
+            }
+            int timeLeft = freeLanAddressCheckRenewTimeout - (int)(freeLanAddressCheckInterval * freeLanAddressCheckLoops);
+            ConsoleHelper.Print($"{timeLeft}s for the timeout.");
+            freeLanAddressCheckLoops += 1;
         }
 
         private void OnProcessCheck(object sender, EventArgs e)
