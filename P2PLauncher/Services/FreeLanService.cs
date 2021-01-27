@@ -156,7 +156,7 @@ namespace P2PLauncher.Services
             }
             if (freeLanDetectionService.GetInstallationStatus() != FreeLanInstallationStatus.OK)
             {
-                dialogService.ShowMessage("FreeLan is not confiured! do it", "JUST DO IT!");
+                dialogService.ShowMessage("FreeLan is not configured! do it", "FreeLan missing.");
                 return false;
             }
 
