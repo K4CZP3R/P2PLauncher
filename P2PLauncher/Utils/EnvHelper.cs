@@ -64,7 +64,7 @@ namespace P2PLauncher.Utils
         {
             try
             {
-               return  new WebClient().DownloadString("http://icanhazip.com");
+               return  new WebClient().DownloadString("https://ipv4.icanhazip.com/");
             }
             catch(Exception ex)
             {
