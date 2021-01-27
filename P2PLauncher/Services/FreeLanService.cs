@@ -30,6 +30,11 @@ namespace P2PLauncher.Services
         private bool showShell;
         private StreamWriter debugWrite;
 
+        public FreeLanMode GetMode()
+        {
+            return mode;
+        }
+
         public void SetPassphrase(string content)
         {
             passphrase = content;
@@ -73,6 +78,7 @@ namespace P2PLauncher.Services
         {
             showShell = c;
         }
+
 
         public bool IsThisValidIPForTheCurrentMode(string ip)
         {
@@ -123,9 +129,10 @@ namespace P2PLauncher.Services
         }
         public void StopFreeLan()
         {
-            if (!process.HasExited)
+            if (process != null && !process.HasExited)
                 process.Kill();
-            debugWrite.Close();
+            if(debugWrite != null)
+                debugWrite.Close();
         }
 
         public bool GetStrangeFreeLansRunning()
@@ -172,13 +179,6 @@ namespace P2PLauncher.Services
 
 
             debugWrite = new StreamWriter("debug.txt");
-
-            /*
-             * //"freelan.exe" --security.passphrase %quoted% --tap_adapter.ipv4_address_prefix_length 9.0.0.1/24 --switch.relay_mode_enabled yes --tap_adapter.metric 1 --debug
-             * //"freelan.exe" --security.passphrase %quoted% --fscp.contact %hostip%:12000 --tap_adapter.ipv4_address_prefix_length 9.0.0.%clientid%/24 --tap_adapter.metric 1 --debug
-             * freelan.exe --security.passphrase "[INSERT_HERE]" --fscp.contact [HOSTS_IP]:12000 --tap_adapter.dhcp_proxy_enabled no --tap_adapter.ipv4_dhcp true --tap_adapter.metric 1 --debug
-             * freelan.exe" --security.passphrase "[INSERT_HERE]" --fscp.contact [[IPV6_IP]]:12000 --tap_adapter.ipv4_address_prefix_length 9.0.0.[CLIENTID]/24 --tap_adapter.metric 1 --debug
-             */
 
             process = new Process();
             process.StartInfo.FileName = freeLanDetectionService.GetFreeLanExecutableLocation();
