@@ -195,7 +195,7 @@ namespace P2PLauncher.Services
                     break;
                 case FreeLanMode.CLIENT_HUB:
                     process.StartInfo.Arguments =
-                        $"--security.passphrase {passphrase} --fscp.contact {hostIp}:12000 --tap_adapter.dhcp_proxy_enabled 0 --tap_adapter.ipv4_dhcp 1 --tap_adapter.metric 1 --debug";
+                        $"--security.passphrase {passphrase} --fscp.contact {hostIp}:12000 --tap_adapter.dhcp_proxy_enabled 0 --tap_adapter.ipv4_dhcp 1 --tap_adapter.metric 1 --switch.relay_mode_enabled yes --debug";
                     break;
             };
 

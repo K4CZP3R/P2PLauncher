@@ -95,7 +95,7 @@
                     <TextBox x:Name="TextBoxClientPassword" HorizontalAlignment="Left" Height="23" Margin="76,119,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
 
                     <!-- Relay -->
-                    <CheckBox x:Name="CheckBoxClientRelay" IsChecked="False" Content="Relay mode" HorizontalAlignment="Left" Margin="14,170,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <CheckBox x:Name="CheckBoxClientRelay" IsChecked="True" Content="Relay mode" HorizontalAlignment="Left" Margin="14,170,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     <Label Content="Relay Mode: Disabled for clients by default (Advanced)" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" FontSize="10" FontStyle="Italic"/>
 
                 </Grid>
