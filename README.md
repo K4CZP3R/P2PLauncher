@@ -22,7 +22,7 @@ Yeah, you’re right, there are other popular alternatives. To name a few off th
 So, why don’t you give P2PLauncher a try?
 
 ## How to get started.
-1. Download the latest release, and extract it to a location of your choosing. Run P2PLauncher.exe as administrator. Windows Defender might raise a warning of running a program from an unknown publisher. P2PLauncher is not harmful. Promise. You can study the code yourself. Click on More Info and then Run Anyway to launch the program:
+1. Download the latest release, and extract it to a location of your choosing. Run P2PLauncher.exe as administrator. Windows Defender might raise a warning of running a program from an unknown publisher. P2PLauncher is not harmful. Promise. You can study the code yourself. Click on More Info and then Run Anyway to launch the program.
 2. Now at the main launcher window, you’ll be able to see 4 tabs that take the left side of the interface, and a region dubbed Information on the right side of the interface.
 
 ## Initial Configuration
@@ -51,7 +51,7 @@ In order for your friends to connect to you, you will need to hand out the publi
 ## Client
 To connect to a personal session, navigate to the Client tab.
 * Fill in the public IP address given to you by the host.
-* Fill in a unique number, between 2 - 240, in the ID field. [No one in your party can use the same ID.]
+* Fill in a unique number, between 2 - 240, in the ID field (It is advised to ask the host what your ID is). __No one in your party can use the same ID.__
 * Lastly, input the password given to you by the host.
 Once done, click on Start and the connection will be made. Simple!
 
