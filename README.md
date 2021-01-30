@@ -22,7 +22,7 @@ Yeah, you’re right, there are other popular alternatives. To name a few off th
 So, why don’t you give P2PLauncher a try?
 
 ## How to get started.
-1. Download the latest release, and extract it to a location of your choosing. Run P2PLauncher.exe as administrator. Windows Defender might raise a warning of running a program from an unknown publisher. P2PLauncher is not harmful. Promise. You can study the code yourself. Click on More Info and then Run Anyway to launch the program.
+1. Download the latest [release](https://github.com/K4CZP3R/P2PLauncher/releases), and extract it to a location of your choosing. Run P2PLauncher.exe as administrator. Windows Defender might raise a warning of running a program from an unknown publisher. P2PLauncher is not harmful. Promise. You can study the code yourself. Click on More Info and then Run Anyway to launch the program.
 2. Now at the main launcher window, you’ll be able to see 4 tabs that take the left side of the interface, and a region dubbed Information on the right side of the interface.
 
 ## Initial Configuration
