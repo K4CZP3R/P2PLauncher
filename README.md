@@ -1,6 +1,5 @@
 # Welcome to the P2P Launcher
 
-[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
 ## What is the P2P Launcher?
 P2PLauncher is a program designed to help connect multiple peers to a simulated LAN environment (virtual LAN) using FreeLAN - an open source, peer-to-peer VPN.
@@ -77,8 +76,4 @@ Hubs are community networks that allow clients to join and play with those also 
 > Project Lead: Noah C. "Ndo360" Cline
 > Lead Programmer: K4CZP3R
 > Guide Writen By: "Gossqe"
-
----
-[buymecoffee]: https://www.buymeacoffee.com/k4czp3r
-[buymecoffeebadge]: https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png
 
